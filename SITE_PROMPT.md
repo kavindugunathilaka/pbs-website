@@ -18,7 +18,7 @@ Build a premium single-page site for a small Sri Lankan accounting and tax pract
 - Typography rules: curly quotes, en dashes for ranges, non-breaking spaces in phone numbers, tabular numerals, balanced headings, ≤ 60ch measure.
 
 ## Structure and copy
-1. **Floating glass pill nav:** badge + "Panambara / Business Solutions"; links Services, About, Process, Contact; phone; "Book a consultation". Mobile: circular-reveal full-screen menu with large serif links.
+1. **Floating glass pill nav:** badge + "Panambara / Business Solutions"; links Services, About, Videos, Process, Contact; phone; "Book a consultation". Mobile: circular-reveal full-screen menu with large serif links.
 2. **Hero (full-bleed team photo, dark green scrim):** eyebrow "Panambara Business Solutions • Est. 2015"; headline "Your trusted / *Tax & Finance Partner.*" (light roman line, gold italic line); Sinhala tagline; glass dock with Call or WhatsApp number, address, live open/closed status, buttons "Book a consultation" and "WhatsApp". Text sits above the faces, dock below. Mobile: photo on top, copy on solid green beneath.
 3. **Services (sticky intro + accordion list, one open at a time):** "Six services. *One accountable team.*"
    - 01 Accounting & Bookkeeping: bookkeeping, financial statements
@@ -29,9 +29,10 @@ Build a premium single-page site for a small Sri Lankan accounting and tax pract
    - 06 Financial Consulting
 4. **Tax band (dark):** "Tax return still pending? *Don't leave it to the last minute.*" with Sinhala line ප්‍රමාද නොවී Tax Return file කරමුද? and a card listing individual income tax, corporate income tax, partnership & SME tax, VAT, the main number and ඔබගේ බදු ගැටලුවට හොඳම විසඳුම අපෙන්.
 5. **About:** rotating-text emblem around the circular badge; "Straightforward advice. *Careful work.*"; four ticks (one team for everything, deadlines tracked, plain language in Sinhala or English, a walk-in office); facts: Established 2015, 6 service lines, open Mon–Sat.
-6. **Process:** "From first call *to filed.*" Talk to us, We review, We prepare & file, We stay on.
-7. **Contact (dark):** "Let's talk about *your numbers.*"; very large gold phone number; Call / WhatsApp / Email buttons; address, other lines, email, hours with live open status; form (name, phone, service, message) that sends via WhatsApp or email with a pre-written message; greyscale Google map; social icons only if URLs are set.
-8. **Footer:** badge lockup, Sinhala tagline, explore / services / reach-us columns, copyright with auto year. Floating WhatsApp button.
+6. **Videos (dark):** "PBS *on video.*" A horizontal scroll-snap rail of 9:16 YouTube Shorts cards (8). Each shows the real thumbnail with a gold play button and loads the YouTube player (youtube-nocookie) in place on tap, one at a time; prev/next arrows and a "01 / 08" counter; buttons "Subscribe on YouTube" and "Follow on Facebook".
+7. **Process:** "From first call *to filed.*" Talk to us, We review, We prepare & file, We stay on.
+8. **Contact (dark):** "Let's talk about *your numbers.*"; very large gold phone number; Call / WhatsApp / Email buttons; address, other lines, email, hours with live open status; form (name, phone, service, message) that sends via WhatsApp or email with a pre-written message; greyscale Google map; Facebook, LinkedIn and YouTube icons (TikTok hidden until a URL is set; also in the footer).
+9. **Footer:** badge lockup, Sinhala tagline, explore / services / reach-us columns, copyright with auto year. Floating WhatsApp button.
 
 ## Behaviour and quality
 - Staggered headline reveal, scroll reveals, subtle hero parallax; all disabled under `prefers-reduced-motion`.

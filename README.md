@@ -21,7 +21,8 @@ Then open http://localhost:5500.
 
 ## Before going live
 
-- Add real social URLs in `js/script.js` (`SOCIAL`).
+- Add a TikTok URL in `js/script.js` (`SOCIAL`) if there is one; Facebook, YouTube and LinkedIn are set.
+- To change the video reels, edit the `REELS` list (YouTube Shorts IDs) in `js/script.js`.
 - Work through the checklist in `CONTENT_REVIEW.md`.
 - Set the live domain in the Open Graph and Schema.org tags in `index.html`.
 

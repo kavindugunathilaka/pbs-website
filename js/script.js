@@ -5,11 +5,23 @@
      Edit these once you have the real page links. Empty = icon hidden.
      ------------------------------------------------------------------ */
   const SOCIAL = {
-    facebook: '',
-    linkedin: '',
+    facebook: 'https://www.facebook.com/PBSolutionsSL/',
+    linkedin: 'https://www.linkedin.com/in/deepani-panambara-6a226b141',
     tiktok:   '',
-    youtube:  ''
+    youtube:  'https://www.youtube.com/channel/UCYsc7NPU5trLjidRzrCPwHA'
   };
+
+  /* YouTube Shorts IDs, shown in order in the Videos section. */
+  const REELS = [
+    'H_6nEMdlAJk',
+    'nhGKPW9T97Q',
+    'E6R3xKaU7mo',
+    '_jB0lTdaYMY',
+    'xJ3Rc278e4Y',
+    'iuRT9uJsRu4',
+    'ojXUzfCtD4A',
+    'yX8wqarXu5k'
+  ];
 
   const WHATSAPP = '94716664111';
   const EMAIL = 'info@panambara.lk';
@@ -18,15 +30,96 @@
   const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
 
   /* ---------- socials ---------- */
-  const socialsEl = $('#socials');
-  if (socialsEl) {
+  const LABELS = { facebook: 'Facebook', linkedin: 'LinkedIn', tiktok: 'TikTok', youtube: 'YouTube' };
+  $$('[data-socials]').forEach(list => {
     Object.entries(SOCIAL).forEach(([name, url]) => {
       if (!url) return;
       const li = document.createElement('li');
-      const label = name.charAt(0).toUpperCase() + name.slice(1);
-      li.innerHTML = `<a href="${url}" target="_blank" rel="noopener" aria-label="${label}"><svg aria-hidden="true"><use href="#i-${name}"/></svg></a>`;
-      socialsEl.appendChild(li);
+      li.innerHTML = `<a href="${url}" target="_blank" rel="noopener" aria-label="${LABELS[name]}"><svg aria-hidden="true"><use href="#i-${name}"/></svg></a>`;
+      list.appendChild(li);
     });
+  });
+  // buttons that point at a social page; hide when no URL is set
+  $$('[data-social]').forEach(a => {
+    const url = SOCIAL[a.dataset.social];
+    if (url) a.href = url; else a.hidden = true;
+  });
+
+  /* ---------- video reels: thumbnail first, player loads on tap ---------- */
+  const rail = $('#rail');
+  if (rail && REELS.length) {
+    const pad = (n) => String(n).padStart(2, '0');
+    const thumb = (id, q) => `https://i.ytimg.com/vi/${id}/${q}.jpg`;
+
+    const renderCard = (li, id, i) => {
+      li.innerHTML = '';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'reel-btn';
+      btn.setAttribute('aria-label', `Play reel ${i + 1} of ${REELS.length}`);
+      const img = document.createElement('img');
+      img.alt = '';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.src = thumb(id, 'maxresdefault');
+      img.addEventListener('error', () => { if (!img.dataset.fb) { img.dataset.fb = '1'; img.src = thumb(id, 'hqdefault'); } });
+      img.addEventListener('load', () => { if (img.naturalWidth <= 120 && !img.dataset.fb) { img.dataset.fb = '1'; img.src = thumb(id, 'hqdefault'); } });
+      const no = document.createElement('span');
+      no.className = 'reel-no tnum';
+      no.textContent = pad(i + 1);
+      const play = document.createElement('span');
+      play.className = 'reel-play';
+      play.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5.5v13l11-6.5z"/></svg>';
+      btn.append(img, no, play);
+      btn.addEventListener('click', () => playReel(li, id, i));
+      li.appendChild(btn);
+    };
+
+    const playReel = (li, id, i) => {
+      // only one reel plays at a time: put any other card back to its thumbnail
+      $$('.reel.is-playing', rail).forEach(other => {
+        if (other === li) return;
+        other.classList.remove('is-playing');
+        renderCard(other, other.dataset.id, Number(other.dataset.index));
+      });
+      li.classList.add('is-playing');
+      li.innerHTML = '';
+      const frame = document.createElement('iframe');
+      frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`;
+      frame.title = `PBS reel ${i + 1} of ${REELS.length}`;
+      frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      frame.allowFullscreen = true;
+      frame.referrerPolicy = 'strict-origin-when-cross-origin';
+      li.appendChild(frame);
+      frame.focus();
+    };
+
+    REELS.forEach((id, i) => {
+      const li = document.createElement('li');
+      li.className = 'reel';
+      li.dataset.id = id;
+      li.dataset.index = i;
+      renderCard(li, id, i);
+      rail.appendChild(li);
+    });
+
+    const prev = $('#railPrev'), next = $('#railNext'), count = $('#railCount');
+    const step = () => {
+      const card = $('.reel', rail);
+      return card ? card.getBoundingClientRect().width + 18 : 280;
+    };
+    const updateRail = () => {
+      const max = rail.scrollWidth - rail.clientWidth;
+      prev.disabled = rail.scrollLeft <= 4;
+      next.disabled = rail.scrollLeft >= max - 4;
+      const first = Math.min(REELS.length, Math.round(rail.scrollLeft / step()) + 1);
+      count.textContent = `${pad(first)} / ${pad(REELS.length)}`;
+    };
+    prev.addEventListener('click', () => rail.scrollBy({ left: -step() * 2, behavior: reduceMotion ? 'auto' : 'smooth' }));
+    next.addEventListener('click', () => rail.scrollBy({ left: step() * 2, behavior: reduceMotion ? 'auto' : 'smooth' }));
+    rail.addEventListener('scroll', updateRail, { passive: true });
+    window.addEventListener('resize', updateRail);
+    updateRail();
   }
 
   /* ---------- nav: scrolled state + scrollspy ---------- */

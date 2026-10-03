@@ -34,6 +34,10 @@
   "image": "assets/images/hero-1536.webp",
   "telephone": "+94716664111",
   "email": "info@panambara.lk",
+  "sameAs": [
+    "https://www.facebook.com/PBSolutionsSL/",
+    "https://www.youtube.com/channel/UCYsc7NPU5trLjidRzrCPwHA"
+  ],
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "240/A, Old Railway Street",
@@ -100,6 +104,7 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="#services">Services</a>
       <a href="#about">About</a>
+      <a href="#videos">Videos</a>
       <a href="#process">Process</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -117,8 +122,9 @@
   <nav class="sheet-links" aria-label="Mobile">
     <a href="#services"><span>01</span>Services</a>
     <a href="#about"><span>02</span>About</a>
-    <a href="#process"><span>03</span>Process</a>
-    <a href="#contact"><span>04</span>Contact</a>
+    <a href="#videos"><span>03</span>Videos</a>
+    <a href="#process"><span>04</span>Process</a>
+    <a href="#contact"><span>05</span>Contact</a>
   </nav>
   <div class="sheet-foot">
     <a href="tel:+94716664111" class="btn btn-gold btn-block">Call 071&nbsp;666&nbsp;4111</a>
@@ -298,6 +304,34 @@
   </div>
 </section>
 
+<!-- ============ VIDEOS ============ -->
+<section class="section videos" id="videos">
+  <div class="container videos-head reveal">
+    <div>
+      <p class="eyebrow eyebrow--light">Watch</p>
+      <h2>PBS <em>on video.</em></h2>
+      <p class="lead">Short reels from our channel. Tap any reel to play it right here.</p>
+    </div>
+    <div class="videos-actions">
+      <a href="#" class="btn btn-gold" data-social="youtube" target="_blank" rel="noopener"><svg class="i"><use href="#i-youtube"/></svg>Subscribe on YouTube</a>
+      <a href="#" class="btn btn-ghost" data-social="facebook" target="_blank" rel="noopener"><svg class="i"><use href="#i-facebook"/></svg>Follow on Facebook</a>
+    </div>
+  </div>
+
+  <div class="rail-wrap reveal">
+    <ul class="rail" id="rail" aria-label="PBS video reels"></ul>
+    <noscript><p class="container rail-fallback"><a href="https://www.youtube.com/channel/UCYsc7NPU5trLjidRzrCPwHA" target="_blank" rel="noopener">Watch our reels on YouTube</a></p></noscript>
+  </div>
+
+  <div class="container rail-controls">
+    <p class="rail-count tnum" id="railCount" aria-live="polite"></p>
+    <div class="rail-buttons">
+      <button type="button" class="rail-btn" id="railPrev" aria-label="Previous reels"><svg class="i"><use href="#i-arrow"/></svg></button>
+      <button type="button" class="rail-btn" id="railNext" aria-label="Next reels"><svg class="i"><use href="#i-arrow"/></svg></button>
+    </div>
+  </div>
+</section>
+
 <!-- ============ PROCESS ============ -->
 <section class="section process" id="process">
   <div class="container">
@@ -366,7 +400,7 @@
           </div>
         </dl>
 
-        <ul class="socials" id="socials" aria-label="Social media"></ul>
+        <ul class="socials" data-socials aria-label="Social media"></ul>
       </div>
 
       <form class="form reveal" id="contactForm" novalidate>
@@ -422,12 +456,14 @@
       </a>
       <p lang="si" class="footer-si">ඔබගේ විශ්වසනීය ගිණුම්කරණ සහකරුවා</p>
       <p class="footer-blurb">Accounting, payroll, tax and company secretarial services in Eheliyagoda, Sri&nbsp;Lanka.</p>
+      <ul class="socials" data-socials aria-label="Social media"></ul>
     </div>
 
     <nav class="footer-col" aria-label="Footer">
       <h4>Explore</h4>
       <a href="#services">Services</a>
       <a href="#about">About</a>
+      <a href="#videos">Videos</a>
       <a href="#process">Process</a>
       <a href="#contact">Contact</a>
     </nav>

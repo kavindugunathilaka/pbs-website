@@ -27,7 +27,10 @@ Also added: Schema.org `AccountingService` data (address, phone, hours, services
 4. **"Bookkeeping, Financial statements"** chips and the Business/Financial Consulting descriptions. The ads name these services but do not describe them. Wording is conservative; adjust to what is really delivered.
 5. **Office hours** (Mon–Fri 9–5, Sat 9–1) came from the owner during this project. Confirm they apply year-round.
 6. **Phone lines.** 071 666 4111 is treated as the WhatsApp number. Confirm that, and that 070 167 9811 / 074 244 8951 / 036 226 0888 are all staffed.
-7. **Social links.** Need the real Facebook, LinkedIn, TikTok and YouTube URLs (set in `SOCIAL` at the top of `js/script.js`).
+7. **Social links (added).** Facebook (`/PBSolutionsSL`), YouTube channel and LinkedIn are live in `SOCIAL` at the top of `js/script.js`.
+   - The LinkedIn link is a **personal profile** (Deepani Panambara), not a company page. If PBS has a LinkedIn company page, swap it in.
+   - No TikTok URL was supplied, so its icon stays hidden until one is added.
+7a. **Video reels (added).** Eight YouTube Shorts play inside the site (list in `REELS`, same file). Confirm each one is public, still wanted on the site, and has captions or a clear message. Reels are labelled "Reel 1" to "Reel 8" because I did not invent titles.
 8. **Domain.** Add the live URL to the `og:image` and Schema.org `url` once known.
 
 ## Deliberately left out
