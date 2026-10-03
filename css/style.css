@@ -65,6 +65,15 @@ p{text-wrap:pretty}
 
 :lang(si){font-family:var(--ff-si);letter-spacing:0;line-height:1.85;text-transform:none}
 
+/* Sinhala tagline lettering: SVG outlines used as a mask so it takes the text colour.
+   The real text sits inside, visually hidden, for screen readers, search and copy. */
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.si-art{display:block;position:relative;width:min(100%,var(--w,300px));aspect-ratio:var(--ar);margin-inline:auto;
+  background-color:currentColor;
+  -webkit-mask:var(--src) no-repeat center / 100% 100%;mask:var(--src) no-repeat center / 100% 100%}
+.si-art--accounting{--src:url("../assets/sinhala/tagline-accounting.svg")}
+.si-art--tax{--src:url("../assets/sinhala/tagline-tax.svg");margin-inline:0}
+
 .tnum{font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum","tnum"}
 
 ::selection{background:var(--gold-300);color:var(--forest-950)}
@@ -264,6 +273,7 @@ a.dock-value:hover{color:var(--gold-200)}
     rgba(6,60,40,.12)}
   .hero-body{position:relative;margin-top:-84px;padding-top:0;text-align:left;z-index:1}
   .hero-title{font-size:clamp(2.5rem,12.4vw,3.6rem)}
+  .hero-body .si-art{margin-inline:0}
   .hero-eyebrow{font-size:.64rem;letter-spacing:.16em;gap:10px;flex-wrap:wrap}
   .hero-dock-wrap{margin-top:30px;padding-bottom:22px}
   .dock{grid-template-columns:1fr}
@@ -495,7 +505,8 @@ h2 em{color:var(--gold-700)}
 /* ---------- footer ---------- */
 .footer{background:var(--forest-950);color:rgba(255,255,255,.7);border-top:1px solid rgba(200,162,74,.3)}
 .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:clamp(28px,4vw,60px);padding-block:clamp(56px,7vw,88px)}
-.footer-si{margin:18px 0 6px;color:var(--gold-200);font-size:.98rem}
+.footer-si{margin:18px 0 10px;color:var(--gold-200)}
+.footer-si .si-art{margin-inline:0}
 .footer-blurb{max-width:34ch;font-size:.93rem}
 .footer-col{display:flex;flex-direction:column;gap:11px;font-size:.93rem}
 .footer-col h4{font-family:var(--ff-body);font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-300);margin-bottom:8px}

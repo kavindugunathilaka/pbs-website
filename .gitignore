@@ -1,0 +1,6 @@
+# never commit font files (licences are not ours to redistribute)
+*.ttf
+*.otf
+*.woff
+*.woff2
+*.preview.png

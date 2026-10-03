@@ -33,6 +33,8 @@ Also added: Schema.org `AccountingService` data (address, phone, hours, services
 7a. **Video reels (added).** Eight YouTube Shorts play inside the site (list in `REELS`, same file). Confirm each one is public, still wanted on the site, and has captions or a clear message. Reels are labelled "Reel 1" to "Reel 8" because I did not invent titles.
 8. **Domain.** Add the live URL to the `og:image` and Schema.org `url` once known.
 
+9. **Tharu Digital Mahee lettering: permission.** The three tagline images are outlines of this font (A.C. Uyanege, Tharu Digi Creations, Kekirawa, 2002). The file carries only a copyright line and no licence, so get the maker's okay before the site goes public with it. If permission is refused, delete the `.si-art` masks and the Sinhala text falls back to Noto Sans Sinhala.
+
 ## Deliberately left out
 
 - **Client testimonials and client-count statistics.** None were supplied; inventing them would be false. Add real ones (with permission) when available.
