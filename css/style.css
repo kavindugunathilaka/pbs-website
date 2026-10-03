@@ -71,8 +71,12 @@ p{text-wrap:pretty}
 .si-art{display:block;position:relative;width:min(100%,var(--w,300px));aspect-ratio:var(--ar);margin-inline:auto;
   background-color:currentColor;
   -webkit-mask:var(--src) no-repeat center / 100% 100%;mask:var(--src) no-repeat center / 100% 100%}
+.si-art--inline{display:inline-block;width:auto;height:calc(1.2em * var(--s,1.15));margin:0;vertical-align:calc(-.3em * var(--s,1.15))}
 .si-art--accounting{--src:url("../assets/sinhala/tagline-accounting.svg")}
 .si-art--tax{--src:url("../assets/sinhala/tagline-tax.svg");margin-inline:0}
+.si-art--pramada{--src:url("../assets/sinhala/band-pramada.svg")}
+.si-art--karamuda{--src:url("../assets/sinhala/band-karamuda.svg")}
+.band-en{font-family:var(--ff-body);font-weight:700;letter-spacing:.01em}
 
 .tnum{font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum","tnum"}
 
@@ -352,7 +356,7 @@ h2 em{color:var(--gold-700)}
 .band-grid{position:relative;display:grid;grid-template-columns:1.3fr 1fr;gap:clamp(36px,6vw,90px);align-items:center}
 .band h2{font-size:clamp(2rem,4.2vw,3.4rem);color:#fff}
 .band h2 em{color:var(--gold-300)}
-.band-si{margin-top:1.4rem;font-size:clamp(1.1rem,1.8vw,1.4rem);color:var(--gold-200)}
+.band-si{margin-top:1.4rem;font-size:clamp(1.2rem,2vw,1.55rem);color:var(--gold-200)}
 .band-card{background:rgba(255,255,255,.05);border:1px solid var(--line-light);border-radius:26px;padding:clamp(24px,3vw,38px);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .band-card-label{font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-300);margin-bottom:14px}
 .band-card ul{margin-bottom:22px}

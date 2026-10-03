@@ -17,7 +17,12 @@ from fontTools.pens.boundsPen import BoundsPen
 LINES = {
     "tagline-accounting": ("Tnf.a jsYajikSh .sKqualrK iylrqjd",          "ඔබගේ විශ්වසනීය ගිණුම්කරණ සහකරුවා"),
     "tagline-tax":        ("Tnf.a noq .eg,qjg fyd|u jsi|qu wfmka",        "ඔබගේ බදු ගැටලුවට හොඳම විසඳුම අපෙන්"),
+    # inline pieces for the tax-band headline; English words stay as normal text between them
+    "band-pramada":       ("m%udo fkdjS",                                   "ප්‍රමාද නොවී"),
+    "band-karamuda":      ("lruqo@",                                        "කරමුද?"),
 }
+# inline pieces share one vertical box (baseline at 75%) so they scale with the surrounding text
+FIXED_BOX = {"band-pramada", "band-karamuda"}
 SPACE = 280  # word gap, font units (1000 per em)
 
 def main():
@@ -35,7 +40,10 @@ def main():
         for g, px in placed: gs[g].draw(TransformPen(bp, (1, 0, 0, -1, px, 0)))
         x0, y0, x1, y1 = bp.bounds
         pad = 20
-        vb = (x0 - pad, y0 - pad, (x1 - x0) + 2 * pad, (y1 - y0) + 2 * pad)
+        if name in FIXED_BOX:
+            vb = (x0 - pad, -900, (x1 - x0) + 2 * pad, 1200)
+        else:
+            vb = (x0 - pad, y0 - pad, (x1 - x0) + 2 * pad, (y1 - y0) + 2 * pad)
         sp = SVGPathPen(gs)
         for g, px in placed: gs[g].draw(TransformPen(sp, (1, 0, 0, -1, px, 0)))
         svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb[0]:.0f} {vb[1]:.0f} {vb[2]:.0f} {vb[3]:.0f}">'

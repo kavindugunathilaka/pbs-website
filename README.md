@@ -36,4 +36,4 @@ Then open http://localhost:5500.
 
 ## Sinhala lettering
 
-The Sinhala taglines use the legacy font *Tharu Digital Mahee*, which is not Unicode. They are drawn as SVG outlines (`assets/sinhala/`) and shown as a CSS mask, with the real Unicode text kept in the page (visually hidden) for screen readers, search and copy-paste. To regenerate: `python tools/sinhala_art.py <path-to-font.ttf>`. The font file itself is git-ignored. The Sinhala headline in the tax band stays in Noto Sans Sinhala because it mixes English words the legacy font cannot draw.
+The Sinhala taglines use the legacy font *Tharu Digital Mahee*, which is not Unicode. They are drawn as SVG outlines (`assets/sinhala/`) and shown as a CSS mask, with the real Unicode text kept in the page (visually hidden) for screen readers, search and copy-paste. To regenerate: `python tools/sinhala_art.py <path-to-font.ttf>`. The font file itself is git-ignored. The tax-band line mixes drawn Sinhala pieces with live English text ("Tax Return file"), because the legacy font cannot draw English.
