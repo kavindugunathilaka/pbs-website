@@ -31,15 +31,29 @@ Also added: Schema.org `AccountingService` data (address, phone, hours, services
    - The LinkedIn link is a **personal profile** (Deepani Panambara), not a company page. If PBS has a LinkedIn company page, swap it in.
    - No TikTok URL was supplied, so its icon stays hidden until one is added.
 7a. **Video reels (added).** Eight YouTube Shorts play inside the site (list in `REELS`, same file). Confirm each one is public, still wanted on the site, and has captions or a clear message. Reels are labelled "Reel 1" to "Reel 8" because I did not invent titles.
-8. **Domain.** Add the live URL to the `og:image` and Schema.org `url` once known.
+8. **Domain.** Rebuild with the real address (`SITE_URL=https://... python tools/build.py`) so canonical links, the sitemap, social previews and Schema.org `url` use it. Until then they point at the GitHub Pages address.
 
 9. **Tharu Digital Mahee lettering: permission.** The Sinhala tagline images (four lines, including the tax-band headline) are outlines of this font (A.C. Uyanege, Tharu Digi Creations, Kekirawa, 2002). The file carries only a copyright line and no licence, so get the maker's okay before the site goes public with it. If permission is refused, delete the `.si-art` masks and the Sinhala text falls back to Noto Sans Sinhala.
+
+## Multi-page restructure (follows businessadvisor.lk)
+
+New pages: Services overview, one page for each of the six services, About Us, Contact Us, Terms & Conditions, Privacy Policy. Home order: slider hero, stats strip, why us, services grid, tax band, reels, process, call-to-action. A top bar (phone, email, live open status, socials, WhatsApp), a Services dropdown, FAQs with Schema.org data and a sitemap were added.
+
+Please check these before launch:
+
+10. **Terms & Conditions and Privacy Policy.** I wrote them to describe what this site actually does (no accounts, contact form stores nothing, Google Fonts/Maps/YouTube embeds). They are sensible general text, **not legal advice**. Have the owner read them, ideally a lawyer, and add the legal company name once known.
+11. **Service page wording.** Every service page uses only what the ads say, plus careful plain-language filler. These are my inference, so confirm or edit them: *"Records ready for filing"* (Accounting), *"Starting out / Structuring / Growing"* (Business Consulting), *"Understanding your numbers / Supporting decisions / Planning ahead"* (Financial Consulting). Consulting pages are thin on purpose until the owner supplies real detail.
+12. **FAQ answers** (three per service) are deliberately safe and procedural. Check the answers about the IRD notice and about filing late; they promise help, not outcomes.
+13. **Slider slides 2 and 3** reuse the wording of the "Simplifying Tax & Business Compliance" and "Company Secretarial" ads, including "Stay compliant. Stay organized."
+14. **Stats strip** shows only checkable facts: years since 2015 (calculated each year), 6 services, 4 phone lines, Mon–Sat office. "Walk-ins welcome" is an assumption; remove it if appointments are required.
+15. **Dropped from the reference site because PBS has no equivalent:** Client Portal, external consultation booking site, event link, Request Details pop-up, the Spotify link.
 
 ## Deliberately left out
 
 - **Client testimonials and client-count statistics.** None were supplied; inventing them would be false. Add real ones (with permission) when available.
 - **Specific tax deadlines, rates or thresholds.** They change; a wrong figure on a tax firm's site is worse than none.
-- **Team names and bios.** Not supplied. The team photo is used unnamed in the hero.
+- **Team names and bios.** Not supplied. The team photo is used unnamed in the hero, About and Why sections.
+- **"Success Stories" testimonials section** from the reference site. There are no client quotes yet; add real ones with permission and a section can be built in minutes.
 
 ## Photo note
 
