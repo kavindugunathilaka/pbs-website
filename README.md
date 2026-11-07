@@ -50,7 +50,7 @@ Then open http://localhost:5500.
 
 ## Design notes
 
-- Type: Bodoni Moda (echoes the PBS wordmark) with Instrument Sans.
+- Type: Plus Jakarta Sans for headings and body (clear, professional, easy to read on phones).
 - Palette: forest green `#06231a`, gold `#c8a24a`, paper `#f6f2e7`.
 - Structure follows businessadvisor.lk: top bar, Services dropdown, hero slider, stats strip, why us, services grid, footer columns, a page per service, Terms and Privacy.
 - Accessible: skip link, keyboard-operable dropdown, accordion-free FAQs (native `<details>`), carousel with pause control and reduced-motion support.

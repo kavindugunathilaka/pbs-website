@@ -250,7 +250,7 @@ def head(r, title, desc, path, extra=(), home=False):
 <link rel="apple-touch-icon" href="{r}assets/images/logo-badge-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 {preload}<link rel="stylesheet" href="{r}css/style.css">
 {chr(10).join(ld(x) for x in extra)}
 </head>

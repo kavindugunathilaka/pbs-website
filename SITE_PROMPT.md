@@ -15,7 +15,7 @@ Build a premium multi-page site for a small Sri Lankan accounting and tax practi
 ## Brand
 - Logo: gold-to-green rising-bars mark and a "PBS" serif wordmark; circular badge on deep green over photos.
 - Colour: forest green `#06231a` / `#0a3225`, gold `#c8a24a`, paper `#f6f2e7`, ink `#10201a`.
-- Type: Bodoni Moda (display), Instrument Sans (UI/body). English only; no Sinhala text.
+- Type: Plus Jakarta Sans (headings 700-800, body 400-500); clean and professional, no decorative serif. English only; no Sinhala text.
 - Rules: curly quotes, en dashes, non-breaking spaces in phone numbers, tabular numerals, balanced headings, ≤ 60ch measure.
 
 ## Pages
