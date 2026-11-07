@@ -4,7 +4,7 @@ Build a premium multi-page site for a small Sri Lankan accounting and tax practi
 
 ## Business
 - **Name:** Panambara Business Solutions (PBS), established 2015
-- **Tagline:** Your Trusted Tax & Finance Partner. Sinhala: ඔබගේ විශ්වසනීය ගිණුම්කරණ සහකරුවා
+- **Tagline:** Your Trusted Tax & Finance Partner
 - **Address:** 240/A, Old Railway Street, Eheliyagoda, Sri Lanka
 - **Phones:** 071 666 4111 (call + WhatsApp), 070 167 9811, 074 244 8951, 036 226 0888
 - **Email:** info@panambara.lk
@@ -15,8 +15,8 @@ Build a premium multi-page site for a small Sri Lankan accounting and tax practi
 ## Brand
 - Logo: gold-to-green rising-bars mark and a "PBS" serif wordmark; circular badge on deep green over photos.
 - Colour: forest green `#06231a` / `#0a3225`, gold `#c8a24a`, paper `#f6f2e7`, ink `#10201a`.
-- Type: Bodoni Moda (display), Instrument Sans (UI/body), Noto Sans Sinhala; Sinhala taglines drawn from the Tharu font as SVG masks with the real text kept for readers.
-- Rules: curly quotes, en dashes, non-breaking spaces in phone numbers, tabular numerals, balanced headings, ≤ 60ch measure, Sinhala line-height ~1.85.
+- Type: Bodoni Moda (display), Instrument Sans (UI/body). English only; no Sinhala text.
+- Rules: curly quotes, en dashes, non-breaking spaces in phone numbers, tabular numerals, balanced headings, ≤ 60ch measure.
 
 ## Pages
 `/` home · `/services/` · `/services/{accounting-bookkeeping, payroll-management, tax-services, company-secretarial, business-consulting, financial-consulting}/` · `/about-us/` · `/contact-us/` · `/terms-and-conditions/` · `/privacy-policy/` · `404.html` · `sitemap.xml` · `robots.txt`
@@ -28,18 +28,18 @@ Build a premium multi-page site for a small Sri Lankan accounting and tax practi
 - Floating WhatsApp button.
 
 ## Home, in order
-1. **Hero slider (3 slides, 7s, pause button, swipe, reduced-motion safe):** (1) team photo, "Your trusted / *Tax & Finance Partner.*" with Sinhala tagline; (2) "Simplifying / *Tax & Business Compliance.*" with chips and CTA to tax services; (3) "Professional / *Company Secretarial Services.*" with "Stay compliant. Stay organized." and CTA. Glass dock under all slides: call number, address, live status, "Book a consultation" + WhatsApp.
+1. **Hero slider (3 slides, 7s, pause button, swipe, reduced-motion safe):** (1) team photo, "Your trusted / *Tax & Finance Partner.*"; (2) "Simplifying / *Tax & Business Compliance.*" with chips and CTA to tax services; (3) "Professional / *Company Secretarial Services.*" with "Stay compliant. Stay organized." and CTA. Glass dock under all slides: call number, address, live status, "Book a consultation" + WhatsApp.
 2. **Stats strip:** "Trusted since 2015": years in practice (calculated), 6 services, 4 phone lines, Mon–Sat. Facts only.
 3. **Why Panambara:** arch-framed team photo + four points (one team for everything, deadlines tracked, plain language, a real local office).
 4. **"How can we help you?":** four service cards (Accounting & Bookkeeping, Tax, Company Secretarial, Payroll) with numbers, chips and "More details"; "Other services" row (Business Consulting, Financial Consulting).
-5. **Tax band (dark):** "Tax return still pending? Don't leave it to the last minute." with Sinhala line and a card (tax types, phone, Sinhala note).
+5. **Tax band (dark):** "Tax return still pending? Don't leave it to the last minute." and a card (tax types, phone).
 6. **PBS on video:** rail of 8 YouTube Shorts, tap to play in place, arrows and counter, Subscribe/Follow buttons.
 7. **From first call to filed:** four steps.
 8. **Call-to-action band.**
 No testimonials until real quotes exist.
 
 ## Service pages
-Dark page hero with breadcrumbs, lead, "Book a consultation" and call buttons. Then: who it's for (chips), what we handle (checked list), how it works (four steps), common questions (native `<details>`), sticky "Talk to us" card with other services, CTA band. Tax shows the Sinhala tagline; Company Secretarial shows "Stay compliant. Stay organized." Each page has Service, FAQPage and BreadcrumbList JSON-LD.
+Dark page hero with breadcrumbs, lead, "Book a consultation" and call buttons. Then: who it's for (chips), what we handle (checked list), how it works (four steps), common questions (native `<details>`), sticky "Talk to us" card with other services, CTA band. Company Secretarial shows "Stay compliant. Stay organized." Each page has Service, FAQPage and BreadcrumbList JSON-LD.
 
 ## About / Contact / Legal
 - **About:** team photo with caption, who we are, ticks, six-service grid, visit block.

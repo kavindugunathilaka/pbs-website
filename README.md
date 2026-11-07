@@ -11,9 +11,7 @@ terms-and-conditions/  privacy-policy/
 404.html  sitemap.xml  robots.txt
 css/style.css   js/script.js       styles and behaviour
 assets/images/                     hero and logo images
-assets/sinhala/                    Sinhala lettering (SVG outlines)
 tools/build.py                     generates every .html page + sitemap
-tools/sinhala_art.py               regenerates the Sinhala SVGs from the Tharu font (font not stored here)
 CONTENT_REVIEW.md                  what changed in the copy and what the owner must confirm
 SITE_PROMPT.md                     brief (brand, structure, copy) for reuse
 ```
@@ -52,11 +50,7 @@ Then open http://localhost:5500.
 
 ## Design notes
 
-- Type: Bodoni Moda (echoes the PBS wordmark) with Instrument Sans; Noto Sans Sinhala for Sinhala text.
+- Type: Bodoni Moda (echoes the PBS wordmark) with Instrument Sans.
 - Palette: forest green `#06231a`, gold `#c8a24a`, paper `#f6f2e7`.
 - Structure follows businessadvisor.lk: top bar, Services dropdown, hero slider, stats strip, why us, services grid, footer columns, a page per service, Terms and Privacy.
 - Accessible: skip link, keyboard-operable dropdown, accordion-free FAQs (native `<details>`), carousel with pause control and reduced-motion support.
-
-## Sinhala lettering
-
-The Sinhala taglines use the legacy font *Tharu Digital Mahee*, which is not Unicode. They are drawn as SVG outlines (`assets/sinhala/`) and shown as a CSS mask, with the real Unicode text kept in the page (visually hidden) for screen readers, search and copy-paste. To regenerate: `python tools/sinhala_art.py <path-to-font.ttf>`. The font file itself is git-ignored. The tax-band line mixes drawn Sinhala pieces with live English text ("Tax Return file"), because the legacy font cannot draw English.

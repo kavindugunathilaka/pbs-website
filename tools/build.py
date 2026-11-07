@@ -23,8 +23,6 @@ ADDRESS = "240/A, Old Railway Street, Eheliyagoda"
 FACEBOOK = "https://www.facebook.com/PBSolutionsSL/"
 YOUTUBE = "https://www.youtube.com/channel/UCYsc7NPU5trLjidRzrCPwHA"
 OTHER_LINES = [("070 167 9811", "+94701679811"), ("074 244 8951", "+94742448951"), ("036 226 0888", "+94362260888")]
-SI_ACCOUNTING = "ඔබගේ විශ්වසනීය ගිණුම්කරණ සහකරුවා"
-SI_TAX = "ඔබගේ බදු ගැටලුවට හොඳම විසඳුම අපෙන්"
 
 # ---------------------------------------------------------------------------
 # Services (all wording comes from PBS's own published ads; items marked
@@ -85,7 +83,6 @@ SERVICES = [
         lead="Tax returns and tax planning for individuals, partnerships, SMEs and companies, including help when an IRD notice or penalty arrives.",
         audience=["Individuals", "Partnerships", "SMEs", "Companies"],
         chips=["Personal income tax", "Corporate tax filing", "VAT"],
-        sinhala="tax",
         handle=[
             ("Personal income tax", "Returns and tax calculation for individuals."),
             ("Corporate tax filing", "Income tax filing for companies."),
@@ -204,13 +201,6 @@ def sprite():
 </defs></svg>"""
 
 
-def si_art(kind, extra=""):
-    """Sinhala lettering drawn as SVG (mask) with the real text kept for readers/search."""
-    ar, text = {"accounting": ("14.147", SI_ACCOUNTING), "tax": ("15.161", SI_TAX)}[kind]
-    return (f'<span class="si-art si-art--{kind}" lang="si" style="--ar:{ar};{extra}">'
-            f'<span class="sr-only">{text}</span></span>')
-
-
 def ld(obj):
     return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False) + "</script>"
 
@@ -260,7 +250,7 @@ def head(r, title, desc, path, extra=(), home=False):
 <link rel="apple-touch-icon" href="{r}assets/images/logo-badge-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Instrument+Sans:wght@400..700&family=Noto+Sans+Sinhala:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
 {preload}<link rel="stylesheet" href="{r}css/style.css">
 {chr(10).join(ld(x) for x in extra)}
 </head>
@@ -373,7 +363,6 @@ def footer(r):
         <img src="{r}assets/images/logo-badge-256.webp" alt="" width="48" height="48" class="brand-mark" loading="lazy">
         <span class="brand-text"><strong>Panambara</strong><em>Business Solutions</em></span>
       </a>
-      <p class="footer-si">{si_art("accounting", "--w:300px")}</p>
       <p class="footer-blurb">Accounting, payroll, tax and company secretarial services in Eheliyagoda, Sri&nbsp;Lanka.</p>
       <ul class="socials" data-socials aria-label="Social media"></ul>
     </div>
@@ -487,7 +476,6 @@ def build_home():
           <span class="line"><span>Your trusted</span></span>
           <span class="line"><em>Tax &amp; Finance Partner.</em></span>
         </h1>
-        <p class="hero-si">{si_art("accounting", "--w:440px")}</p>
       </div>
     </article>
 
@@ -607,7 +595,6 @@ def build_home():
     <div class="reveal">
       <p class="eyebrow eyebrow--light">Tax returns</p>
       <h2>Tax return still pending?<br><em>Don&rsquo;t leave it to the last minute.</em></h2>
-      <p class="band-si"><span class="si-art si-art--inline si-art--pramada" lang="si" style="--ar:3.227"><span class="sr-only">ප්‍රමාද නොවී</span></span> <span class="band-en" lang="en">Tax Return file</span> <span class="si-art si-art--inline si-art--karamuda" lang="si" style="--ar:2.151"><span class="sr-only">කරමුද?</span></span></p>
     </div>
     <div class="band-card reveal">
       <p class="band-card-label">Talk to us about</p>
@@ -618,7 +605,6 @@ def build_home():
         <li>VAT</li>
       </ul>
       <a href="tel:{PHONE_TEL}" class="band-phone tnum">{PHONE}</a>
-      <p class="band-card-note">{si_art("tax", "--w:100%")}</p>
     </div>
   </div>
 </section>
@@ -710,8 +696,6 @@ def build_service(s):
         f'<li><a href="{r}services/{o["slug"]}/"><svg class="i"><use href="#{o["icon"]}"/></svg>{e(o["nav"])}<svg class="i go"><use href="#i-arrow"/></svg></a></li>'
         for o in SERVICES if o["slug"] != s["slug"])
     extra = ""
-    if s.get("sinhala") == "tax":
-        extra = f'<p class="page-si">{si_art("tax", "--w:420px")}</p>'
     quote = f'<p class="pull">{e(s["quote"])}</p>' if s.get("quote") else ""
     url = f"{SITE_URL}/services/{s['slug']}/"
     svc_ld = {"@context": "https://schema.org", "@type": "Service", "name": s["title"], "description": s["lead"], "url": url,
@@ -800,7 +784,6 @@ def build_about():
         <li>Explained in plain language, in Sinhala or English</li>
         <li>An office you can walk into, not just a phone number</li>
       </ul>
-      <div class="si-line">{si_art("accounting", "--w:360px")}</div>
     </div>
   </div>
 </section>
@@ -823,7 +806,6 @@ def build_about():
         <a href="tel:{PHONE_TEL}" class="btn btn-ghost"><svg class="i"><use href="#i-phone"/></svg>{PHONE}</a>
       </div>
     </div>
-    <p class="visit-si reveal">{si_art("tax", "--w:380px")}</p>
   </div>
 </section>
 {cta_band(r)}

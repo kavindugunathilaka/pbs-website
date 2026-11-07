@@ -11,7 +11,6 @@ Every line on the site was checked against what the business has actually publis
 | "10+ years in practice" (several places) | "Est. 2015" / "Since 2015" | A year does not go stale and is easy to verify. |
 | "For over a decade we've helped..." | "Established in 2015" | Same reason; avoids a claim that needs updating. |
 | Generic one-line service blurbs | Real sub-services from the ads | The ads list exact scopes (Personal/Corporate Income Tax, Partnership & SME Tax, VAT, Tax Planning & Advisory; Company Registration, Statutory Records, Annual Returns, Board & Shareholder Documentation, Corporate Compliance Support). |
-| English only | English plus the firm's own Sinhala lines | "ඔබගේ විශ්වසනීය ගිණුම්කරණ සහකරුවා", "ඔබගේ බදු ගැටලුවට හොඳම විසඳුම අපෙන්" and "ප්‍රමාද නොවී Tax Return file කරමුද?" all come from their artwork. |
 | Contact form opened only the email app | Sends via WhatsApp or email, with a pre-written message | Most Sri Lankan visitors do not have a desktop mail client set up; WhatsApp is how this firm already takes enquiries. |
 | Dead social icons pointing to `#` | Hidden until a URL is set in `js/script.js` | Dead links look unfinished. |
 | "Never a call centre" | "An office you can walk into, not just a phone number" | Says the same thing without the dig at others. |
@@ -21,8 +20,7 @@ Also added: Schema.org `AccountingService` data (address, phone, hours, services
 
 ## Needs the owner to confirm
 
-1. **Sinhala text.** Copied from the ad artwork. Have a Sinhala reader check spelling before launch.
-2. **"IRD notices & penalties" under Tax Services.** Inferred from the ad "IRD එකෙන් රතු නිවේදන ඇවිත්ද? දඩ ගෙවන්න වෙලාද?". Remove if it is not a service they offer.
+2. **"IRD notices & penalties" under Tax Services.** Inferred from one of the PBS ads about IRD notices and penalties. Remove if it is not a service they offer.
 3. **"Explained in plain language, in Sinhala or English".** Based on their bilingual ads. Add Tamil if they serve Tamil-speaking clients.
 4. **"Bookkeeping, Financial statements"** chips and the Business/Financial Consulting descriptions. The ads name these services but do not describe them. Wording is conservative; adjust to what is really delivered.
 5. **Office hours** (Mon–Fri 9–5, Sat 9–1) came from the owner during this project. Confirm they apply year-round.
@@ -32,8 +30,6 @@ Also added: Schema.org `AccountingService` data (address, phone, hours, services
    - No TikTok URL was supplied, so its icon stays hidden until one is added.
 7a. **Video reels (added).** Eight YouTube Shorts play inside the site (list in `REELS`, same file). Confirm each one is public, still wanted on the site, and has captions or a clear message. Reels are labelled "Reel 1" to "Reel 8" because I did not invent titles.
 8. **Domain.** Rebuild with the real address (`SITE_URL=https://... python tools/build.py`) so canonical links, the sitemap, social previews and Schema.org `url` use it. Until then they point at the GitHub Pages address.
-
-9. **Tharu Digital Mahee lettering: permission.** The Sinhala tagline images (four lines, including the tax-band headline) are outlines of this font (A.C. Uyanege, Tharu Digi Creations, Kekirawa, 2002). The file carries only a copyright line and no licence, so get the maker's okay before the site goes public with it. If permission is refused, delete the `.si-art` masks and the Sinhala text falls back to Noto Sans Sinhala.
 
 ## Multi-page restructure (follows businessadvisor.lk)
 
@@ -58,3 +54,7 @@ Please check these before launch:
 ## Photo note
 
 The hero photo is a candid and charming shot of the real team, which suits a small local firm. The ceiling damage and open boxes are visible only faintly under the overlay. A re-shoot is optional, not necessary.
+
+## Sinhala
+
+The site is English only, by the owner's decision. All Sinhala text and the Tharu lettering were removed. The only Sinhala wording left is the claim "Explained in plain language, in Sinhala or English" (about service language), which the owner should confirm or delete. Sinhala captions inside the YouTube reels belong to those videos.
