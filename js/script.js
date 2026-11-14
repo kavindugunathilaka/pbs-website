@@ -11,18 +11,6 @@
     youtube:  'https://www.youtube.com/channel/UCYsc7NPU5trLjidRzrCPwHA'
   };
 
-  /* YouTube Shorts IDs, shown in order in the Videos section. */
-  const REELS = [
-    'H_6nEMdlAJk',
-    'nhGKPW9T97Q',
-    'E6R3xKaU7mo',
-    '_jB0lTdaYMY',
-    'xJ3Rc278e4Y',
-    'iuRT9uJsRu4',
-    'ojXUzfCtD4A',
-    'yX8wqarXu5k'
-  ];
-
   const WHATSAPP = '94716664111';
   const EMAIL = 'info@panambara.lk';
   const SLIDE_MS = 7000;
@@ -237,18 +225,24 @@
     render();
   }
 
-  /* ---------- video reels: thumbnail first, player loads on tap ---------- */
+  /* ---------- video reels: thumbnail first, player loads on tap ----------
+     The reel cards and their captions are in the page itself (built from tools/content.py);
+     this only adds the thumbnails, the player and the arrows. */
   const rail = $('#rail');
-  if (rail && REELS.length) {
+  const reels = rail ? $$('.reel', rail) : [];
+  if (reels.length) {
     const pad = (n) => String(n).padStart(2, '0');
     const thumb = (id, q) => `https://i.ytimg.com/vi/${id}/${q}.jpg`;
+    const frameOf = (li) => $('.reel-frame', li);
+    const titleOf = (li) => (($('h3', li) || {}).textContent || `reel ${Number(li.dataset.index) + 1}`);
 
-    const renderCard = (li, id, i) => {
-      li.innerHTML = '';
+    const renderThumb = (li) => {
+      const id = li.dataset.id, i = Number(li.dataset.index), frame = frameOf(li);
+      frame.innerHTML = '';
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'reel-btn';
-      btn.setAttribute('aria-label', `Play reel ${i + 1} of ${REELS.length}`);
+      btn.setAttribute('aria-label', `Play video: ${titleOf(li)}`);
       const img = document.createElement('img');
       img.alt = '';
       img.loading = 'lazy';
@@ -263,49 +257,40 @@
       play.className = 'reel-play';
       play.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5.5v13l11-6.5z"/></svg>';
       btn.append(img, no, play);
-      btn.addEventListener('click', () => playReel(li, id, i));
-      li.appendChild(btn);
+      btn.addEventListener('click', () => playReel(li));
+      frame.appendChild(btn);
     };
 
-    const playReel = (li, id, i) => {
+    const playReel = (li) => {
       // only one reel plays at a time: put any other card back to its thumbnail
       $$('.reel.is-playing', rail).forEach(other => {
         if (other === li) return;
         other.classList.remove('is-playing');
-        renderCard(other, other.dataset.id, Number(other.dataset.index));
+        renderThumb(other);
       });
       li.classList.add('is-playing');
-      li.innerHTML = '';
-      const frame = document.createElement('iframe');
-      frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`;
-      frame.title = `PBS reel ${i + 1} of ${REELS.length}`;
-      frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-      frame.allowFullscreen = true;
-      frame.referrerPolicy = 'strict-origin-when-cross-origin';
-      li.appendChild(frame);
-      frame.focus();
+      const frame = frameOf(li);
+      frame.innerHTML = '';
+      const player = document.createElement('iframe');
+      player.src = `https://www.youtube-nocookie.com/embed/${li.dataset.id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`;
+      player.title = `PBS video: ${titleOf(li)}`;
+      player.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      player.allowFullscreen = true;
+      player.referrerPolicy = 'strict-origin-when-cross-origin';
+      frame.appendChild(player);
+      player.focus();
     };
 
-    REELS.forEach((id, i) => {
-      const li = document.createElement('li');
-      li.className = 'reel';
-      li.dataset.id = id;
-      li.dataset.index = i;
-      renderCard(li, id, i);
-      rail.appendChild(li);
-    });
+    reels.forEach(renderThumb);
 
     const prev = $('#railPrev'), next = $('#railNext'), count = $('#railCount');
-    const step = () => {
-      const card = $('.reel', rail);
-      return card ? card.getBoundingClientRect().width + 18 : 280;
-    };
+    const step = () => reels[0].getBoundingClientRect().width + 18;
     const updateRail = () => {
       const max = rail.scrollWidth - rail.clientWidth;
       prev.disabled = rail.scrollLeft <= 4;
       next.disabled = rail.scrollLeft >= max - 4;
-      const first = Math.min(REELS.length, Math.round(rail.scrollLeft / step()) + 1);
-      count.textContent = `${pad(first)} / ${pad(REELS.length)}`;
+      const first = Math.min(reels.length, Math.round(rail.scrollLeft / step()) + 1);
+      count.textContent = `${pad(first)} / ${pad(reels.length)}`;
     };
     prev.addEventListener('click', () => rail.scrollBy({ left: -step() * 2, behavior: reduceMotion ? 'auto' : 'smooth' }));
     next.addEventListener('click', () => rail.scrollBy({ left: step() * 2, behavior: reduceMotion ? 'auto' : 'smooth' }));

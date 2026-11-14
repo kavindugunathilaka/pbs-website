@@ -13,7 +13,7 @@ css/style.css   js/script.js       styles and behaviour
 assets/images/                     logo images
 assets/images/team/                team photo crops (WebP) and the 1200x630 share image
 tools/build.py                     generates every .html page, sitemap.xml, robots.txt and llms.txt
-tools/content.py                   service wording, FAQs, headline numbers and the "last updated" date
+tools/content.py                   service wording, FAQs, headline numbers, reel titles and the "last updated" date
 tools/make_photos.py               makes the photo crops from the original 2000x1125 photos (kept outside this repo)
 CONTENT_REVIEW.md                  what changed in the copy and what the owner must confirm
 SEO_AEO_GEO.md                     search, AI-answer and local visibility: what is built, what the owner must do, how to test
@@ -45,7 +45,7 @@ Then open http://localhost:5500.
 ## Edit in `js/script.js`
 
 - `SOCIAL`: Facebook, YouTube and LinkedIn are set; add a TikTok URL to show its icon.
-- `REELS`: YouTube Shorts IDs shown in the Videos section.
+- The reels (YouTube IDs, English and Sinhala titles, topic, upload date) are listed as `REELS` in `tools/content.py`; edit them there and run `python tools/build.py`.
 
 ## Before going live
 

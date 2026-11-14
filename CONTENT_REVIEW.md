@@ -50,6 +50,9 @@ Please check these before launch:
 26. **FAQs.** Every service page has seven to eight questions, and there is a site-wide `/faq/` page and a short FAQ on the home page. Answers are 30-50 words, answer first, and name the business. The structured data for each FAQ is generated from the same list as the visible text so they cannot disagree. Prices are never stated; the cost answer says fees are confirmed directly.
 27. **"Last updated" dates** (14 November 2026) are real, set in `tools/content.py`. Change the date only when content genuinely changes. Do not bump it without a real edit.
 
+28. **Reel captions.** Each reel now shows a topic label, an English title and the video's own Sinhala title (exactly as on YouTube). The English titles are my translations, so a Sinhala reader should confirm them: "Two dates every taxpayer must remember", "Why keep business and personal expenses separate?", "Do you know about withholding tax?", "How to make a simple financial plan for a business", "What happens if you miss the VAT deadline?", "Introduction to individual income tax", "Introduction to APIT", "Sole proprietorship or company?". The YouTube descriptions were mostly the brand line, a phone number and hashtags (two videos have none), so the titles are shown instead. The "+94 71 66 64111" number in some YouTube descriptions is written differently from the site's 071 666 4111; worth tidying on YouTube. Sinhala text is back on the site for these captions only (Noto Sans Sinhala).
+29. **Video data for search engines.** Each reel has `VideoObject` data (title, upload date, length, thumbnail, link) so Google and AI tools can understand the videos. Dates come from YouTube.
+
 ## Photos (real team photos, added)
 
 17. **Staff consent.** The photos show nine staff members. Confirm everyone shown is happy to appear on a public website.
@@ -70,4 +73,4 @@ The hero photo is a candid and charming shot of the real team, which suits a sma
 
 ## Sinhala
 
-The site is English only, by the owner's decision. All Sinhala text and the Tharu lettering were removed. The only Sinhala wording left is the claim "Explained in plain language, in Sinhala or English" (about service language), which the owner should confirm or delete. Sinhala captions inside the YouTube reels belong to those videos.
+The site is English only, by the owner's decision, with one exception: the original Sinhala video titles shown under the reels (see item 28). All Sinhala marketing text and the Tharu lettering were removed. The other Sinhala wording left is the claim "Explained in plain language, in Sinhala or English" (about service language), which the owner should confirm or delete. Sinhala captions inside the YouTube reels belong to those videos.

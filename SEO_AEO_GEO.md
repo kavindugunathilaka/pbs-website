@@ -19,6 +19,7 @@ Method: Voyage AEO/GEO skill (Princeton GEO study heuristics, treated as directi
 | `WebSite`, `WebPage` (with `dateModified`), `Service`, `ItemList`, `FAQPage`, `BreadcrumbList` | per page type | Machine-readable structure; FAQ data is generated from the same list as the visible FAQ so they cannot drift |
 | One H1 per page, unique title and description, canonical URL, `en-LK` hreflang | every page | Clean basics |
 | Sitemap with real last-modified dates, `robots.txt`, `llms.txt` (plain summary of the business for AI tools) | site root | Crawl guidance and a one-page description AI tools can read |
+| `VideoObject` data for each of the 8 reels (name, description, upload date, length, thumbnail, embed link), with the caption as visible text | home page | Lets Google and AI tools understand and cite the videos |
 | Same name, address and phone everywhere on the site | header, footer, contact, data | Entity consistency |
 | Descriptive alt text, fast WebP images, mobile layout | all pages | Page experience |
 

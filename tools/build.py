@@ -18,7 +18,7 @@ import sys
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from content import (CONTENT_UPDATED, CONTENT_UPDATED_ISO, FAQ_GENERAL, HOME_FAQ_PICK, HOME_OVERVIEW, LEGAL_UPDATED,  # noqa: E402
-                     OTHER, PRIMARY, SERVICE_PHOTO, SERVICES, STATS, STATS_SOURCE, STEPS, common_faqs)
+                     OTHER, PRIMARY, REELS, SERVICE_PHOTO, SERVICES, STATS, STATS_SOURCE, STEPS, common_faqs)
 PHOTO_ALT = {
     "card-1": "Four PBS team members in green PBS polo shirts reviewing documents together at a laptop",
     "card-3": "The full PBS team of nine in green PBS polo shirts gathered around a laptop",
@@ -42,6 +42,13 @@ OTHER_LINES = [("070 167 9811", "+94701679811"), ("074 244 8951", "+94742448
 
 SLUGS = {sv["slug"]: sv for sv in SERVICES}
 NUM = {6: "Six", 7: "Seven", 8: "Eight", 9: "Nine", 10: "Ten"}
+
+
+def asset_v(rel):
+    """Short content hash of a CSS/JS file, used as ?v=... so browsers always fetch the latest version."""
+    import hashlib
+    with open(os.path.join(ROOT, rel), "rb") as fh:
+        return hashlib.md5(fh.read()).hexdigest()[:8]
 
 REELS_NOTE = "Short reels from our channel. Tap any reel to play it right here."
 
@@ -133,6 +140,17 @@ def faq_html(items):
         f'<div><p>{e(a)}</p></div></details>' for q, a in items)
 
 
+def video_ld(rl):
+    mins, secs = divmod(rl["seconds"], 60)
+    return {"@context": "https://schema.org", "@type": "VideoObject", "@id": f"{SITE_URL}/#video-{rl['id']}",
+            "name": rl["en"], "alternateName": rl["si"],
+            "description": f"{rl['en']}. A short video by {NAME} on {rl['topic'].lower()}. Call {PHONE} for more details.",
+            "thumbnailUrl": f"https://i.ytimg.com/vi/{rl['id']}/maxresdefault.jpg", "uploadDate": rl["upload"],
+            "duration": f"PT{mins}M{secs}S", "inLanguage": "si",
+            "embedUrl": f"https://www.youtube.com/embed/{rl['id']}", "contentUrl": f"https://www.youtube.com/shorts/{rl['id']}",
+            "publisher": {"@id": SITE_URL + "/#business"}}
+
+
 def services_list_ld():
     return {"@context": "https://schema.org", "@type": "ItemList", "name": "Services of " + NAME, "itemListElement": [
         {"@type": "ListItem", "position": i + 1, "name": sv["title"], "url": f"{SITE_URL}/services/{sv['slug']}/"} for i, sv in enumerate(SERVICES)]}
@@ -177,8 +195,8 @@ def head(r, title, desc, path, extra=(), home=False, noindex=False, modified=Non
 <link rel="apple-touch-icon" href="{r}assets/images/logo-badge-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-{preload}<link rel="stylesheet" href="{r}css/style.css?v={CONTENT_UPDATED_ISO}">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600&display=swap" rel="stylesheet">
+{preload}<link rel="stylesheet" href="{r}css/style.css?v={asset_v("css/style.css")}">
 {chr(10).join(ld(x) for x in ld_all)}
 </head>
 <body>
@@ -326,7 +344,7 @@ def footer(r):
 
 <a href="{WA}" class="fab" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp"><svg><use href="#i-wa"/></svg></a>
 
-<script src="{r}js/script.js?v={CONTENT_UPDATED_ISO}"></script>
+<script src="{r}js/script.js?v={asset_v("js/script.js")}"></script>
 </body>
 </html>
 """
@@ -434,10 +452,15 @@ def hero_html():
 def build_home():
     r = ""
     home_faqs = [FAQ_GENERAL[i] for i in HOME_FAQ_PICK]
-    ld_extra = [business_ld(), faq_ld(home_faqs), services_list_ld()]
+    ld_extra = [business_ld(), faq_ld(home_faqs), services_list_ld()] + [video_ld(rl) for rl in REELS]
     h = head(r, f"{NAME} | Tax, Accounting & Business Services, Eheliyagoda",
              "Tax, accounting, audit, advisory, compliance, payroll, web development and digital marketing in Eheliyagoda, Sri Lanka. Panambara Business Solutions, since 2015.",
              "", ld_extra, home=True)
+    reels_html = "".join(
+        f'''<li class="reel" data-id="{rl['id']}" data-index="{i}">
+        <div class="reel-frame"></div>
+        <div class="reel-cap"><span class="reel-topic">{e(rl['topic'])}</span><h3>{e(rl['en'])}</h3><p lang="si">{e(rl['si'])}</p></div>
+      </li>''' for i, rl in enumerate(REELS))
     stat_cards = "".join(
         f'<div class="reveal"><dt>{lab}</dt><dd class="stat-num tnum" data-count="{n}" data-suffix="{suf}">{txt}</dd></div>'
         for lab, n, suf, txt in STATS)
@@ -561,7 +584,7 @@ def build_home():
   </div>
 
   <div class="rail-wrap reveal">
-    <ul class="rail" id="rail" aria-label="PBS video reels"></ul>
+    <ul class="rail" id="rail" aria-label="PBS video reels">{reels_html}</ul>
     <noscript><p class="container rail-fallback"><a href="{YOUTUBE}" target="_blank" rel="noopener">Watch our reels on YouTube</a></p></noscript>
   </div>
 

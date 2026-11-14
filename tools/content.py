@@ -324,3 +324,25 @@ FAQ_GENERAL = [
     ("How much do your services cost?", _COST),
 ]
 HOME_FAQ_PICK = [0, 2, 3, 4, 6, 7]   # which FAQ_GENERAL entries the home page shows
+
+
+# The eight YouTube Shorts on the home page. `si` is each video's own title exactly as on YouTube;
+# `en` is an English title written from it (listed in CONTENT_REVIEW.md for confirmation).
+REELS = [
+    dict(id="H_6nEMdlAJk", en="Two dates every taxpayer must remember", si="බදු ගෙවන ඔබ මතක තබාගත යුතු දින දෙකක් !",
+         topic="Tax dates", seconds=67, upload="2026-09-23T08:51:10-07:00"),
+    dict(id="nhGKPW9T97Q", en="Why keep business and personal expenses separate?", si="ඔබගේ ව්‍යාපාරික හා පෞද්ගලික වියදම් වෙන්කර තබා ගත යුත්තේ ඇයි?",
+         topic="Business expenses", seconds=102, upload="2026-06-07T04:30:33-07:00"),
+    dict(id="E6R3xKaU7mo", en="Do you know about withholding tax?", si="Withholding Tax ගැන ඔබ දන්නවාද? 🤔",
+         topic="Withholding tax", seconds=51, upload="2026-06-25T07:47:11-07:00"),
+    dict(id="_jB0lTdaYMY", en="How to make a simple financial plan for a business", si="ව්‍යාපාරයක් සඳහා Simple Financial Plan එකක් හදන්නේ කෙසේද?",
+         topic="Financial planning", seconds=59, upload="2026-06-28T00:09:20-07:00"),
+    dict(id="xJ3Rc278e4Y", en="What happens if you miss the VAT deadline?", si="VAT deadline miss කළොත් මොකද වෙන්නෙ ?",
+         topic="VAT", seconds=55, upload="2026-07-07T19:30:19-07:00"),
+    dict(id="iuRT9uJsRu4", en="Introduction to individual income tax", si="තනි පුද්ගල ආදායම් බදු හැඳින්වීම...",
+         topic="Income tax", seconds=90, upload="2026-07-14T07:18:18-07:00"),
+    dict(id="ojXUzfCtD4A", en="Introduction to APIT", si="APIT බදු හැඳින්වීම...",
+         topic="APIT", seconds=54, upload="2026-07-20T19:30:13-07:00"),
+    dict(id="yX8wqarXu5k", en="Sole proprietorship or company?", si="තනි පුද්ගල ව්‍යාපාරයක්ද? Company එකක්ද?",
+         topic="Business structure", seconds=67, upload="2026-07-24T07:18:29-07:00"),
+]
