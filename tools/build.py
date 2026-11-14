@@ -14,7 +14,6 @@ import os
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 PHOTO_ALT = {
-    "hero-wide": "Four PBS team members in green PBS polo shirts reviewing documents together at a laptop",
     "card-1": "Four PBS team members in green PBS polo shirts reviewing documents together at a laptop",
     "card-3": "The full PBS team of nine in green PBS polo shirts gathered around a laptop",
     "card-4": "Three PBS team members working together at a laptop, one pointing at the screen",
@@ -244,7 +243,7 @@ def breadcrumb_ld(trail):
 
 def head(r, title, desc, path, extra=(), home=False):
     canon = f"{SITE_URL}/{path}"
-    preload = f'<link rel="preload" as="image" href="{r}assets/images/team/hero-wide.webp" media="(min-width: 761px)">\n' if home else ""
+    preload = f'<link rel="preload" as="image" href="{r}assets/images/team/hero-6.webp" media="(min-width: 761px)">\n' if home else ""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -467,12 +466,67 @@ def card(r, slug, n):
       </a>"""
 
 
+HERO = [
+    dict(n=6, label="Welcome", ih="66%", pos="0%"),
+    dict(n=4, label="Tax services", eyebrow="Tax services", l1="Simplifying", l2="Tax &amp; Business Compliance.",
+         link=("services/tax-services/", "Explore tax services"), ih="66%", pos="0%"),
+    dict(n=5, label="Company secretarial", eyebrow="Company secretarial", l1="Professional", l2="Company Secretarial Services.",
+         link=("services/company-secretarial/", "Explore company secretarial"), ih="66%", pos="0%"),
+    dict(n=3, label="Our team", eyebrow="Our team", l1="One team for your", l2="tax, payroll and filings.",
+         link=("about-us/", "Meet the team"), ih="60%", pos="0%"),
+    dict(n=1, label="Accounting &amp; payroll", eyebrow="Accounting &amp; payroll", l1="Books and payroll,", l2="kept in order.",
+         link=("services/accounting-bookkeeping/", "Our accounting services"), ih="66%", pos="0%"),
+]
+
+
+def hero_html():
+    """The home hero slider: every slide is a real team photo with a short headline."""
+    total = len(HERO)
+    slides, pgs = [], []
+    for i, sl in enumerate(HERO):
+        n, first = sl["n"], i == 0
+        alt = PHOTO_ALT[f"card-{n}"]
+        attrs = 'fetchpriority="high"' if first else 'loading="lazy" decoding="async"'
+        pic = (f'<picture><source media="(max-width: 760px)" srcset="assets/images/team/hero-m-{n}.webp">'
+               f'<img src="assets/images/team/hero-{n}.webp" width="1920" height="1080" alt="{alt}" {attrs}></picture>')
+        if first:
+            text = """<p class="hero-eyebrow"><span>Panambara Business Solutions</span><i></i><span>Est. 2015</span></p>
+        <h1 class="hero-title">
+          <span class="line"><span>Your trusted</span></span>
+          <span class="line"><em>Tax &amp; Finance Partner.</em></span>
+        </h1>"""
+        else:
+            href, label = sl["link"]
+            text = f"""<p class="hero-eyebrow"><span>{sl['eyebrow']}</span></p>
+        <h2 class="hero-title">
+          <span class="line"><span>{sl['l1']}</span></span>
+          <span class="line"><em>{sl['l2']}</em></span>
+        </h2>
+        <a href="{href}" class="slide-link">{label} <svg class="i"><use href="#i-arrow"/></svg></a>"""
+        slides.append(f"""    <article class="slide slide--photo{'' if first else ' slide--compact'}{' is-active' if first else ''}" style="--ih:{sl['ih']};--ipos:{sl['pos']}" role="group" aria-roledescription="slide" aria-label="{i + 1} of {total}: {sl['label']}">
+      <div class="slide-media">
+        {pic}
+        <div class="slide-shade"></div>
+      </div>
+      <div class="container slide-body">
+        {text}
+      </div>
+    </article>""")
+        cur = ' aria-current="true"' if first else ""
+        pgs.append(f'<button type="button" class="pg{" is-active" if first else ""}" aria-label="Go to slide {i + 1}: {sl["label"]}"{cur}><span class="tnum">{i + 1:02d}</span><i></i></button>')
+    slides_html = '  <div class="hero-slides" id="slides" aria-live="off">\n\n' + "\n\n".join(slides) + "\n  </div>"
+    pager_html = ('  <div class="pager" id="pager">\n    ' + "\n    ".join(pgs) +
+                  '\n    <button type="button" class="pg-toggle" id="pgToggle" aria-label="Pause slideshow"><svg class="i"><use href="#i-pause"/></svg></button>\n  </div>')
+    return slides_html, pager_html
+
+
 def build_home():
     r = ""
     ld_extra = [business_ld()]
     h = head(r, f"{NAME} | Tax, Accounting & Company Secretarial, Eheliyagoda",
              "Panambara Business Solutions (PBS) is an accounting and tax practice in Eheliyagoda, Sri Lanka, established 2015. Bookkeeping, payroll (EPF/ETF), income tax, VAT, company secretarial work and business consulting.",
              "", ld_extra, home=True)
+    hero_slides, hero_pager = hero_html()
     other = "".join(
         f'<a class="other-item" href="services/{slug}/"><span class="other-ico"><svg class="i"><use href="#{SLUGS[slug]["icon"]}"/></svg></span><span><strong>{e(SLUGS[slug]["title"])}</strong><small>{e(SLUGS[slug]["short"])}</small></span><svg class="i other-arrow"><use href="#i-arrow"/></svg></a>'
         for slug in OTHER)
@@ -482,60 +536,9 @@ def build_home():
 
 <!-- HERO SLIDER -->
 <section class="hero" id="home" aria-roledescription="carousel" aria-label="Featured services">
-  <div class="hero-slides" id="slides" aria-live="off">
+{hero_slides}
 
-    <article class="slide slide--photo is-active" role="group" aria-roledescription="slide" aria-label="1 of 3: Welcome">
-      <div class="slide-media">
-        <picture>
-          <source media="(max-width: 760px)" srcset="assets/images/team/hero-mobile.webp">
-          <img src="assets/images/team/hero-wide.webp" width="1920" height="1080" alt="{PHOTO_ALT['hero-wide']}" fetchpriority="high">
-        </picture>
-        <div class="slide-shade"></div>
-      </div>
-      <div class="container slide-body">
-        <p class="hero-eyebrow"><span>Panambara Business Solutions</span><i></i><span>Est. 2015</span></p>
-        <h1 class="hero-title">
-          <span class="line"><span>Your trusted</span></span>
-          <span class="line"><em>Tax &amp; Finance Partner.</em></span>
-        </h1>
-      </div>
-    </article>
-
-    <article class="slide slide--text" role="group" aria-roledescription="slide" aria-label="2 of 3: Tax services">
-      <svg class="slide-bars" aria-hidden="true"><use href="#bars"/></svg>
-      <div class="container slide-body">
-        <p class="hero-eyebrow"><span>Tax services</span></p>
-        <h2 class="hero-title">
-          <span class="line"><span>Simplifying</span></span>
-          <span class="line"><em>Tax &amp; Business Compliance.</em></span>
-        </h2>
-        <p class="slide-sub">Professional support for individuals, startups and companies, for accurate tax calculation and reporting.</p>
-        <ul class="hero-badges"><li>Personal income tax</li><li>Corporate tax filing</li><li>Partnership &amp; SME tax</li><li>VAT services</li></ul>
-        <a href="services/tax-services/" class="btn btn-gold btn-lg slide-cta">Explore tax services <svg class="i"><use href="#i-arrow"/></svg></a>
-      </div>
-    </article>
-
-    <article class="slide slide--text" role="group" aria-roledescription="slide" aria-label="3 of 3: Company secretarial">
-      <svg class="slide-bars" aria-hidden="true"><use href="#bars"/></svg>
-      <div class="container slide-body">
-        <p class="hero-eyebrow"><span>Company secretarial</span></p>
-        <h2 class="hero-title">
-          <span class="line"><span>Professional</span></span>
-          <span class="line"><em>Company Secretarial Services.</em></span>
-        </h2>
-        <p class="slide-sub">From registration to annual returns. Stay compliant. Stay organized.</p>
-        <ul class="hero-badges"><li>Company registration</li><li>Statutory records</li><li>Annual returns</li><li>Board documentation</li></ul>
-        <a href="services/company-secretarial/" class="btn btn-gold btn-lg slide-cta">Explore company secretarial <svg class="i"><use href="#i-arrow"/></svg></a>
-      </div>
-    </article>
-  </div>
-
-  <div class="pager" id="pager">
-    <button type="button" class="pg is-active" aria-label="Go to slide 1: Welcome" aria-current="true"><span class="tnum">01</span><i></i></button>
-    <button type="button" class="pg" aria-label="Go to slide 2: Tax services"><span class="tnum">02</span><i></i></button>
-    <button type="button" class="pg" aria-label="Go to slide 3: Company secretarial"><span class="tnum">03</span><i></i></button>
-    <button type="button" class="pg-toggle" id="pgToggle" aria-label="Pause slideshow"><svg class="i"><use href="#i-pause"/></svg></button>
-  </div>
+{hero_pager}
 
   <div class="container hero-dock-wrap">
     <div class="dock">

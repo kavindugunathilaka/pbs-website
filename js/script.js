@@ -48,13 +48,13 @@
   /* ---------- nav: scrolled state + hero image parallax ---------- */
   const nav = $('#nav');
   const hero = $('#home');
-  const heroImg = $('.slide--photo .slide-media img');
+  const heroImgs = $$('.slide-media img');
   let ticking = false;
   const onScroll = () => {
     const y = window.scrollY;
     nav.classList.toggle('is-scrolled', y > 40);
-    if (!reduceMotion && heroImg && hero && window.innerWidth > 760 && y < hero.offsetHeight) {
-      heroImg.style.transform = `translate3d(0, ${y * 0.12}px, 0) scale(1.06)`;
+    if (!reduceMotion && heroImgs.length && hero && window.innerWidth > 760 && y < hero.offsetHeight) {
+      heroImgs.forEach(img => { img.style.transform = `translate3d(0, ${y * 0.12}px, 0) scale(1.06)`; });
     }
     ticking = false;
   };

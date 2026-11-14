@@ -37,9 +37,11 @@ def crop(im, box):
     return im.crop(box)
 
 
-# Home hero: photo 6, full frame for desktop, a 4:3 crop that keeps all four faces for phones
-save(load(6), "hero-wide.webp", (1920, 1080), 76)
-save(crop(load(6), (250, 0, 1750, 1125)), "hero-mobile.webp", (1000, 750), 76)
+# Home hero slider: one slide per photo. Desktop = full 16:9 frame; phones = a 3:2 crop that keeps everyone in view
+for n in (6, 4, 5, 3, 1):
+    save(load(n), f"hero-{n}.webp", (1920, 1080), 76)
+    box = (100, 0, 1788, 1125) if n == 4 else (156, 0, 1844, 1125)
+    save(crop(load(n), box), f"hero-m-{n}.webp", (1200, 800), 76)
 
 # "Why Panambara": photo 4, 4:5 portrait crop on the three faces
 save(crop(load(4), (460, 0, 1360, 1125)), "why-arch.webp", (800, 1000), 78)

@@ -28,7 +28,7 @@ Build a premium multi-page site for a small Sri Lankan accounting and tax practi
 - Floating WhatsApp button.
 
 ## Home, in order
-1. **Hero slider (3 slides, 7s, pause button, swipe, reduced-motion safe):** (1) team photo, "Your trusted / *Tax & Finance Partner.*"; (2) "Simplifying / *Tax & Business Compliance.*" with chips and CTA to tax services; (3) "Professional / *Company Secretarial Services.*" with "Stay compliant. Stay organized." and CTA. Glass dock under all slides: call number, address, live status, "Book a consultation" + WhatsApp.
+1. **Hero slider (5 photo slides, 7s, pause button, swipe, reduced-motion safe):** every slide is a real team photo that fades into the green at the top, with a short two-line headline above the people and the glass dock under all slides. (1) "Your trusted / *Tax & Finance Partner.*" (2) "Simplifying / *Tax & Business Compliance.*" (3) "Professional / *Company Secretarial Services.*" (4) "One team for your / *tax, payroll and filings.*" (5) "Books and payroll, / *kept in order.*" Slides 2-5 end with a text link to the matching page. Desktop uses 16:9 photos; phones get a 3:2 crop with the copy below the photo.
 2. **Stats strip:** "Trusted since 2015": years in practice (calculated), 6 services, 4 phone lines, Mon–Sat. Facts only.
 3. **Why Panambara:** arch-framed team photo + four points (one team for everything, deadlines tracked, plain language, a real local office).
 4. **"How can we help you?":** four service cards (Accounting & Bookkeeping, Tax, Company Secretarial, Payroll) with numbers, chips and "More details"; "Other services" row (Business Consulting, Financial Consulting).

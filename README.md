@@ -59,4 +59,4 @@ Then open http://localhost:5500.
 
 ## Photos
 
-The six originals live outside the repo (e.g. `D:/VOYAGE/PBS/photos`). To change a crop, edit `tools/make_photos.py` and run `python tools/make_photos.py <photos-folder>`, then `python tools/build.py`. Recommended source size for any new cover photo: 2400 x 1350 px (16:9), with the people in the lower two thirds so the headline has clear space above them.
+The six originals live outside the repo (e.g. `D:/VOYAGE/PBS/photos`). To change a crop, edit `tools/make_photos.py` and run `python tools/make_photos.py <photos-folder>`, then `python tools/build.py`. The hero slider uses five of the photos (see `HERO` in `tools/build.py` for the headline and crop of each slide). Recommended source size for any new cover photo: 2400 x 1350 px (16:9), with the people in the lower two thirds so the headline has clear space above them.
