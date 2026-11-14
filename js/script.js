@@ -148,17 +148,18 @@
     const year = new Date().getFullYear();
     const run = (el) => {
       const target = el.dataset.since ? year - parseInt(el.dataset.since, 10) : parseInt(el.dataset.count, 10);
-      el.textContent = String(target);                         // correct value even if animation never runs
+      const show = (n) => n.toLocaleString('en-US') + (el.dataset.suffix || '');
+      el.textContent = show(target);                           // correct value even if animation never runs
       if (reduceMotion) return;
       const start = performance.now(), dur = 1200;
       const step = (now) => {
         const p = Math.min((now - start) / dur, 1);
-        el.textContent = String(Math.round((1 - Math.pow(1 - p, 3)) * target));
-        if (p < 1) requestAnimationFrame(step); else el.textContent = String(target);
+        el.textContent = show(Math.round((1 - Math.pow(1 - p, 3)) * target));
+        if (p < 1) requestAnimationFrame(step); else el.textContent = show(target);
       };
-      el.textContent = '0';
+      el.textContent = show(0);
       requestAnimationFrame(step);
-      setTimeout(() => { el.textContent = String(target); }, dur + 300);
+      setTimeout(() => { el.textContent = show(target); }, dur + 300);
     };
     const co = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) { run(e.target); co.unobserve(e.target); } });

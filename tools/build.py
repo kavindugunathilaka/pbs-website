@@ -11,8 +11,14 @@ import datetime
 import html
 import json
 import os
+import re
+import shutil
+import sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from content import (CONTENT_UPDATED, CONTENT_UPDATED_ISO, FAQ_GENERAL, HOME_FAQ_PICK, HOME_OVERVIEW, LEGAL_UPDATED,  # noqa: E402
+                     OTHER, PRIMARY, SERVICE_PHOTO, SERVICES, STATS, STATS_SOURCE, STEPS, common_faqs)
 PHOTO_ALT = {
     "card-1": "Four PBS team members in green PBS polo shirts reviewing documents together at a laptop",
     "card-3": "The full PBS team of nine in green PBS polo shirts gathered around a laptop",
@@ -22,10 +28,6 @@ PHOTO_ALT = {
     "team-full": "The full PBS team of nine in green PBS polo shirts gathered around a laptop",
     "why-arch": "Three PBS team members working at a laptop, one pointing at the screen",
     "sign": "The illuminated PBS sign reading Panambara Business Solutions",
-}
-SERVICE_PHOTO = {
-    "accounting-bookkeeping": "card-1", "payroll-management": "card-5", "tax-services": "card-4",
-    "company-secretarial": "card-3", "business-consulting": "card-6", "financial-consulting": "card-1",
 }
 SITE_URL = os.environ.get("SITE_URL", "https://kavindugunathilaka.github.io/pbs-website").rstrip("/")
 TODAY = datetime.date.today()
@@ -38,148 +40,8 @@ FACEBOOK = "https://www.facebook.com/PBSolutionsSL/"
 YOUTUBE = "https://www.youtube.com/channel/UCYsc7NPU5trLjidRzrCPwHA"
 OTHER_LINES = [("070 167 9811", "+94701679811"), ("074 244 8951", "+94742448951"), ("036 226 0888", "+94362260888")]
 
-# ---------------------------------------------------------------------------
-# Services (all wording comes from PBS's own published ads; items marked
-# "confirm" are listed in CONTENT_REVIEW.md for the owner to verify)
-# ---------------------------------------------------------------------------
-STEPS = [
-    ("Talk to us", "Call or message us on WhatsApp and tell us what you need."),
-    ("We review", "We look at your records and requirements, then explain what is needed and what it involves."),
-    ("We prepare & file", "{deliver}"),
-    ("We stay on", "{stay}"),
-]
-
-SERVICES = [
-    dict(
-        slug="accounting-bookkeeping", title="Accounting & Bookkeeping", nav="Accounting & Bookkeeping", icon="s-accounting",
-        short="Accurate books and financial statements, always up to date.",
-        meta="Accounting and bookkeeping in Eheliyagoda: day-to-day bookkeeping and financial statements for startups, SMEs and companies.",
-        lead="Day-to-day bookkeeping and financial statements, kept accurate and up to date, so you always know where the business stands.",
-        audience=["Startups", "SMEs", "Partnerships", "Companies"],
-        chips=["Bookkeeping", "Financial statements"],
-        handle=[
-            ("Day-to-day bookkeeping", "Your transactions recorded accurately and kept up to date."),
-            ("Financial statements", "Prepared from your books so you can see where the business stands."),
-            ("Records ready for filing", "Kept in order for tax and compliance work, so nothing has to be chased at deadline time."),
-        ],
-        deliver="Books are kept and financial statements prepared by our team.",
-        stay="Bookkeeping carries on month after month as your business grows.",
-        faqs=[
-            ("What does bookkeeping include?", "Recording your day-to-day transactions and preparing financial statements from them. When you call, we confirm exactly what is covered for your business."),
-            ("Can you also file my taxes from the books you keep?", "Yes. Accounting, tax and company secretarial work all sit with one team, so your records and your filings stay consistent."),
-            ("How do I get started?", "Call 071 666 4111 or message us on WhatsApp. We ask a few questions and explain what we need from you."),
-        ],
-    ),
-    dict(
-        slug="payroll-management", title="Payroll Management (EPF / ETF)", nav="Payroll (EPF / ETF)", icon="s-payroll",
-        short="Payroll on schedule, with EPF and ETF handled.",
-        meta="Payroll management in Eheliyagoda, Sri Lanka, including EPF and ETF, for startups, SMEs and companies.",
-        lead="Payroll prepared on schedule, with EPF and ETF handled as part of the same process rather than as an afterthought.",
-        audience=["Startups", "SMEs", "Companies with employees"],
-        chips=["Payroll processing", "EPF", "ETF"],
-        handle=[
-            ("Payroll processing", "Salaries calculated and prepared on schedule."),
-            ("EPF", "Employees' Provident Fund handled as part of the same payroll run."),
-            ("ETF", "Employees' Trust Fund handled alongside EPF, not as a separate chore."),
-        ],
-        deliver="Payroll is prepared by our team, with EPF and ETF taken care of.",
-        stay="Payroll continues each period, with changes in your team reflected as they happen.",
-        faqs=[
-            ("Do you handle EPF and ETF?", "Yes. Payroll management, including EPF and ETF, is one of our core services."),
-            ("Is payroll only for large companies?", "No. We support businesses of different sizes, including startups and SMEs. Tell us how many people you employ and we take it from there."),
-            ("How do I get started?", "Call 071 666 4111 or message us on WhatsApp. We ask a few questions and explain what we need from you."),
-        ],
-    ),
-    dict(
-        slug="tax-services", title="Tax Services", nav="Tax Services", icon="s-tax",
-        short="Returns, VAT and tax planning for individuals and businesses.",
-        meta="Tax services in Eheliyagoda, Sri Lanka: personal and corporate income tax, partnership and SME tax, VAT, tax planning and help with IRD notices.",
-        lead="Tax returns and tax planning for individuals, partnerships, SMEs and companies, including help when an IRD notice or penalty arrives.",
-        audience=["Individuals", "Partnerships", "SMEs", "Companies"],
-        chips=["Personal income tax", "Corporate tax filing", "VAT"],
-        handle=[
-            ("Personal income tax", "Returns and tax calculation for individuals."),
-            ("Corporate tax filing", "Income tax filing for companies."),
-            ("Partnership & SME tax", "Tax work for partnerships and for small and medium businesses."),
-            ("VAT services", "Support with VAT for businesses that need it."),
-            ("Tax planning & advisory", "Looking ahead so tax is not a surprise."),
-            ("IRD notices & penalties", "Help understanding and responding when a notice or penalty arrives."),
-        ],
-        deliver="Returns and tax documents are prepared and submitted by our team.",
-        stay="Filing reminders and tax planning carry on as your income or business changes.",
-        faqs=[
-            ("Who can use your tax services?", "Individuals, partnerships, SMEs and companies."),
-            ("I have received a notice from the IRD. Can you help?", "Yes. Contact us with the notice and we look at it with you and explain the next steps."),
-            ("Is it too late to file my tax return?", "Call us and we check your position and tell you what can be done. The sooner you call, the more options there usually are."),
-        ],
-    ),
-    dict(
-        slug="company-secretarial", title="Company Secretarial Services", nav="Company Secretarial", icon="s-secretarial",
-        short="Registration through annual compliance, kept in order.",
-        meta="Company secretarial services in Eheliyagoda: company registration, statutory records, annual returns and corporate compliance support.",
-        lead="From registering a company to keeping it compliant year after year, with the paperwork in order.",
-        audience=["Startups", "SMEs", "Companies"],
-        chips=["Company registration", "Annual returns", "Statutory records"],
-        quote="Stay compliant. Stay organized.",
-        handle=[
-            ("Company registration", "Setting up a new company."),
-            ("Maintaining statutory records", "The official records a company must keep, maintained for you."),
-            ("Annual returns filing", "Annual returns prepared and filed."),
-            ("Board & shareholder documentation", "Documents for your board and shareholders."),
-            ("Corporate compliance support", "Help staying on the right side of company requirements."),
-        ],
-        deliver="Registrations, records and filings are prepared and submitted by our team.",
-        stay="Annual returns, records and compliance support continue year after year.",
-        faqs=[
-            ("Can you register a new company for me?", "Yes. Company registration is part of our company secretarial service."),
-            ("What are statutory records?", "The official records a company is legally required to keep up to date. We maintain them for you."),
-            ("Do you help after the company is registered?", "Yes. That includes annual returns, board and shareholder documentation and ongoing compliance support."),
-        ],
-    ),
-    dict(
-        slug="business-consulting", title="Business Consulting", nav="Business Consulting", icon="s-consulting",
-        short="Practical guidance for startups and SMEs.",
-        meta="Business consulting in Eheliyagoda, Sri Lanka: practical guidance for startups and SMEs on setting up, structuring and growing.",
-        lead="Practical guidance for startups and SMEs on setting up, structuring and growing the business.",
-        audience=["Startups", "SMEs"],
-        chips=["Startups", "SMEs"],
-        handle=[
-            ("Starting out", "Thinking through how to set the business up."),
-            ("Structuring", "Arranging the business in a way that suits how you work."),
-            ("Growing", "Practical next steps as the business develops."),
-        ],
-        deliver="Advice is given in plain language, with clear next steps.",
-        stay="We stay available as the business grows and new questions come up.",
-        faqs=[
-            ("Who is business consulting for?", "Startups and SMEs."),
-            ("How is consulting different from accounting?", "Accounting records what has happened; consulting helps you decide what to do next. We can do both."),
-            ("How do I get started?", "Call 071 666 4111 or message us on WhatsApp and tell us what you are working on."),
-        ],
-    ),
-    dict(
-        slug="financial-consulting", title="Financial Consulting", nav="Financial Consulting", icon="s-financial",
-        short="Clear financial insight for better decisions.",
-        meta="Financial consulting in Eheliyagoda, Sri Lanka: clear financial insight to support better business decisions.",
-        lead="Clear financial insight to support better business decisions.",
-        audience=["Startups", "SMEs", "Companies"],
-        chips=[],
-        handle=[
-            ("Understanding your numbers", "Making sense of where the business stands."),
-            ("Supporting decisions", "Financial insight you can act on."),
-            ("Planning ahead", "Looking at what the figures mean for the months to come."),
-        ],
-        deliver="Insights are presented clearly, in plain language.",
-        stay="We keep supporting your decisions as the figures change.",
-        faqs=[
-            ("What does financial consulting cover?", "Clear financial insight to support better business decisions. When you call, we talk through your situation and agree what is useful."),
-            ("Can it be combined with bookkeeping and tax work?", "Yes. All of our services sit with one team."),
-            ("How do I get started?", "Call 071 666 4111 or message us on WhatsApp."),
-        ],
-    ),
-]
-SLUGS = {s["slug"]: s for s in SERVICES}
-PRIMARY = ["accounting-bookkeeping", "tax-services", "company-secretarial", "payroll-management"]
-OTHER = ["business-consulting", "financial-consulting"]
+SLUGS = {sv["slug"]: sv for sv in SERVICES}
+NUM = {6: "Six", 7: "Seven", 8: "Eight", 9: "Nine", 10: "Ten"}
 
 REELS_NOTE = "Short reels from our channel. Tap any reel to play it right here."
 
@@ -212,6 +74,9 @@ def sprite():
 <symbol id="s-secretarial" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 9h8M8 12.5h8M8 16h5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
 <symbol id="s-consulting" viewBox="0 0 24 24"><path d="M4 20V11l8-6 8 6v9M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
 <symbol id="s-financial" viewBox="0 0 24 24"><path d="M4 18V9M10 18V5M16 18v-7M20 18H4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="s-audit" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m15 15 5 5M8.2 10.6l1.7 1.7 3-3.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="s-web" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 9h18M6.5 6.8h.01M9 6.8h.01" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+<symbol id="s-marketing" viewBox="0 0 24 24"><path d="M4 10v4a1 1 0 0 0 1 1h2l6 4V5L7 9H5a1 1 0 0 0-1 1Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M16.5 9.5a3.5 3.5 0 0 1 0 5M18.8 7.2a7 7 0 0 1 0 9.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
 </defs></svg>"""
 
 
@@ -219,21 +84,58 @@ def ld(obj):
     return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False) + "</script>"
 
 
+def slugify(text):
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")[:70]
+
+
 def business_ld():
     return {
         "@context": "https://schema.org", "@type": "AccountingService", "@id": SITE_URL + "/#business",
         "name": NAME, "alternateName": "PBS", "slogan": "Your Trusted Tax & Finance Partner",
-        "foundingDate": "2015", "url": SITE_URL + "/", "image": SITE_URL + "/assets/images/team/og-share.jpg",
+        "description": HOME_OVERVIEW, "foundingDate": "2015", "url": SITE_URL + "/",
+        "logo": SITE_URL + "/assets/images/logo-badge-512.png", "image": SITE_URL + "/assets/images/team/og-share.jpg",
         "telephone": PHONE_TEL, "email": EMAIL,
         "sameAs": [FACEBOOK, YOUTUBE],
         "address": {"@type": "PostalAddress", "streetAddress": "240/A, Old Railway Street", "addressLocality": "Eheliyagoda", "addressCountry": "LK"},
+        "areaServed": [{"@type": "City", "name": "Eheliyagoda"}, {"@type": "Country", "name": "Sri Lanka"}],
+        "knowsAbout": [sv["title"] for sv in SERVICES],
+        "contactPoint": [{"@type": "ContactPoint", "telephone": t, "contactType": "customer service", "areaServed": "LK"}
+                         for t in [PHONE_TEL] + [tel for _, tel in OTHER_LINES]],
         "openingHoursSpecification": [
             {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "09:00", "closes": "17:00"},
             {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "13:00"},
         ],
         "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Services", "itemListElement": [
-            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": s["title"], "url": f"{SITE_URL}/services/{s['slug']}/"}} for s in SERVICES]},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": sv["title"], "url": f"{SITE_URL}/services/{sv['slug']}/"}} for sv in SERVICES]},
     }
+
+
+def website_ld():
+    return {"@context": "https://schema.org", "@type": "WebSite", "@id": SITE_URL + "/#website", "url": SITE_URL + "/",
+            "name": NAME, "inLanguage": "en-LK", "publisher": {"@id": SITE_URL + "/#business"}}
+
+
+def webpage_ld(url, name, desc, modified=None):
+    return {"@context": "https://schema.org", "@type": "WebPage", "@id": url + "#webpage", "url": url, "name": name, "description": desc,
+            "inLanguage": "en-LK", "dateModified": modified or CONTENT_UPDATED_ISO,
+            "isPartOf": {"@id": SITE_URL + "/#website"}, "about": {"@id": SITE_URL + "/#business"}}
+
+
+def faq_ld(items):
+    """FAQPage data generated from the same list that is shown on the page, so the two cannot drift apart."""
+    return {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in items]}
+
+
+def faq_html(items):
+    return "".join(
+        f'<details class="faq" id="faq-{slugify(q)}"><summary><span>{e(q)}</span><span class="svc-icon" aria-hidden="true"></span></summary>'
+        f'<div><p>{e(a)}</p></div></details>' for q, a in items)
+
+
+def services_list_ld():
+    return {"@context": "https://schema.org", "@type": "ItemList", "name": "Services of " + NAME, "itemListElement": [
+        {"@type": "ListItem", "position": i + 1, "name": sv["title"], "url": f"{SITE_URL}/services/{sv['slug']}/"} for i, sv in enumerate(SERVICES)]}
 
 
 def breadcrumb_ld(trail):
@@ -241,20 +143,27 @@ def breadcrumb_ld(trail):
         {"@type": "ListItem", "position": i + 1, "name": n, "item": f"{SITE_URL}/{p}"} for i, (n, p) in enumerate(trail)]}
 
 
-def head(r, title, desc, path, extra=(), home=False):
+def head(r, title, desc, path, extra=(), home=False, noindex=False, modified=None):
     canon = f"{SITE_URL}/{path}"
     preload = f'<link rel="preload" as="image" href="{r}assets/images/team/hero-6.webp" media="(min-width: 761px)">\n' if home else ""
+    ld_all = list(extra) + [webpage_ld(canon, title, desc, modified)] + ([website_ld()] if home else [])
+    robots = "noindex,follow" if noindex else "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
+    alt = "" if noindex else f'''<link rel="alternate" hreflang="en-LK" href="{canon}">
+<link rel="alternate" hreflang="x-default" href="{canon}">
+'''
     return f"""<!DOCTYPE html>
-<html lang="en">
+<html lang="en-LK">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>document.documentElement.classList.add('js');</script>
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
+<meta name="robots" content="{robots}">
 <meta name="theme-color" content="#06231a">
 <link rel="canonical" href="{canon}">
-<meta property="og:type" content="website">
+{alt}<meta property="og:type" content="website">
+<meta property="og:locale" content="en_LK">
 <meta property="og:site_name" content="{NAME}">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
@@ -262,14 +171,15 @@ def head(r, title, desc, path, extra=(), home=False):
 <meta property="og:image" content="{SITE_URL}/assets/images/team/og-share.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:updated_time" content="{modified or CONTENT_UPDATED_ISO}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="{r}assets/images/logo-badge-512.png">
 <link rel="apple-touch-icon" href="{r}assets/images/logo-badge-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-{preload}<link rel="stylesheet" href="{r}css/style.css">
-{chr(10).join(ld(x) for x in extra)}
+{preload}<link rel="stylesheet" href="{r}css/style.css?v={CONTENT_UPDATED_ISO}">
+{chr(10).join(ld(x) for x in ld_all)}
 </head>
 <body>
 {sprite()}
@@ -380,7 +290,7 @@ def footer(r):
         <img src="{r}assets/images/logo-badge-256.webp" alt="" width="48" height="48" class="brand-mark" loading="lazy">
         <span class="brand-text"><strong>Panambara</strong><em>Business Solutions</em></span>
       </a>
-      <p class="footer-blurb">Accounting, payroll, tax and company secretarial services in Eheliyagoda, Sri&nbsp;Lanka.</p>
+      <p class="footer-blurb">Tax, accounting, audit, advisory, compliance, payroll, web development and digital marketing in Eheliyagoda, Sri&nbsp;Lanka.</p>
       <ul class="socials" data-socials aria-label="Social media"></ul>
     </div>
 
@@ -389,6 +299,7 @@ def footer(r):
       <a href="{home}">Home</a>
       <a href="{r}about-us/">About Us</a>
       <a href="{r}contact-us/">Contact Us</a>
+      <a href="{r}faq/">FAQ</a>
       <a href="{r}terms-and-conditions/">Terms &amp; Conditions</a>
       <a href="{r}privacy-policy/">Privacy Policy</a>
     </nav>
@@ -415,7 +326,7 @@ def footer(r):
 
 <a href="{WA}" class="fab" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp"><svg><use href="#i-wa"/></svg></a>
 
-<script src="{r}js/script.js"></script>
+<script src="{r}js/script.js?v={CONTENT_UPDATED_ISO}"></script>
 </body>
 </html>
 """
@@ -469,13 +380,13 @@ def card(r, slug, n):
 HERO = [
     dict(n=6, label="Welcome", ih="66%", pos="0%"),
     dict(n=4, label="Tax services", eyebrow="Tax services", l1="Simplifying", l2="Tax &amp; Business Compliance.",
-         link=("services/tax-services/", "Explore tax services"), ih="66%", pos="0%"),
-    dict(n=5, label="Company secretarial", eyebrow="Company secretarial", l1="Professional", l2="Company Secretarial Services.",
-         link=("services/company-secretarial/", "Explore company secretarial"), ih="66%", pos="0%"),
+         link=("services/taxation-tax-consultancy/", "Explore tax services"), ih="66%", pos="0%"),
+    dict(n=5, label="Corporate compliance", eyebrow="Corporate compliance", l1="Professional", l2="Company Secretarial Services.",
+         link=("services/corporate-compliance/", "Explore corporate compliance"), ih="66%", pos="0%"),
     dict(n=3, label="Our team", eyebrow="Our team", l1="One team for your", l2="tax, payroll and filings.",
          link=("about-us/", "Meet the team"), ih="60%", pos="0%"),
     dict(n=1, label="Accounting &amp; payroll", eyebrow="Accounting &amp; payroll", l1="Books and payroll,", l2="kept in order.",
-         link=("services/accounting-bookkeeping/", "Our accounting services"), ih="66%", pos="0%"),
+         link=("services/financial-management-accounting/", "Our accounting services"), ih="66%", pos="0%"),
 ]
 
 
@@ -522,10 +433,14 @@ def hero_html():
 
 def build_home():
     r = ""
-    ld_extra = [business_ld()]
-    h = head(r, f"{NAME} | Tax, Accounting & Company Secretarial, Eheliyagoda",
-             "Panambara Business Solutions (PBS) is an accounting and tax practice in Eheliyagoda, Sri Lanka, established 2015. Bookkeeping, payroll (EPF/ETF), income tax, VAT, company secretarial work and business consulting.",
+    home_faqs = [FAQ_GENERAL[i] for i in HOME_FAQ_PICK]
+    ld_extra = [business_ld(), faq_ld(home_faqs), services_list_ld()]
+    h = head(r, f"{NAME} | Tax, Accounting & Business Services, Eheliyagoda",
+             "Tax, accounting, audit, advisory, compliance, payroll, web development and digital marketing in Eheliyagoda, Sri Lanka. Panambara Business Solutions, since 2015.",
              "", ld_extra, home=True)
+    stat_cards = "".join(
+        f'<div class="reveal"><dt>{lab}</dt><dd class="stat-num tnum" data-count="{n}" data-suffix="{suf}">{txt}</dd></div>'
+        for lab, n, suf, txt in STATS)
     hero_slides, hero_pager = hero_html()
     other = "".join(
         f'<a class="other-item" href="services/{slug}/"><span class="other-ico"><svg class="i"><use href="#{SLUGS[slug]["icon"]}"/></svg></span><span><strong>{e(SLUGS[slug]["title"])}</strong><small>{e(SLUGS[slug]["short"])}</small></span><svg class="i other-arrow"><use href="#i-arrow"/></svg></a>'
@@ -563,15 +478,12 @@ def build_home():
 </section>
 
 <!-- STATS -->
-<section class="stats" aria-label="PBS at a glance">
+<section class="stats" aria-label="Panambara Business Solutions in numbers">
   <div class="container">
-    <p class="stats-intro reveal"><span class="eyebrow">Trusted since 2015</span>An accounting and tax practice you can walk into, on Old Railway Street in Eheliyagoda.</p>
-    <dl class="stats-grid">
-      <div class="reveal"><dt>Years in practice</dt><dd class="stat-num tnum" data-since="2015">{TODAY.year - 2015}</dd></div>
-      <div class="reveal"><dt>Services under one roof</dt><dd class="stat-num tnum" data-count="6">6</dd></div>
-      <div class="reveal"><dt>Phone lines, plus WhatsApp</dt><dd class="stat-num tnum" data-count="4">4</dd></div>
-      <div class="reveal"><dt>Office open, walk-ins welcome</dt><dd class="stat-num stat-num--text">Mon&ndash;Sat</dd></div>
-    </dl>
+    <p class="stats-intro reveal"><span class="eyebrow">Trusted since 2015</span>Numbers behind the work we do for clients.</p>
+    <p class="stats-overview reveal">{HOME_OVERVIEW}</p>
+    <dl class="stats-grid">{stat_cards}</dl>
+    <p class="stats-note">{STATS_SOURCE} <span>Last updated: {CONTENT_UPDATED}</span></p>
   </div>
 </section>
 
@@ -586,7 +498,7 @@ def build_home():
       <h2>Straightforward advice.<br><em>Careful work.</em></h2>
       <p class="lead">We look after the numbers and the filings, so owners can look after the business.</p>
       <ul class="why-list">
-        <li><span class="why-ico"><svg class="i"><use href="#i-check"/></svg></span><div><strong>One team for everything</strong><p>Tax, payroll, accounts and company secretarial work all sit with one team.</p></div></li>
+        <li><span class="why-ico"><svg class="i"><use href="#i-check"/></svg></span><div><strong>One team for everything</strong><p>Tax, accounts, audit support, compliance, payroll and digital services all sit with one team.</p></div></li>
         <li><span class="why-ico"><svg class="i"><use href="#i-check"/></svg></span><div><strong>Deadlines tracked for you</strong><p>We keep an eye on filing dates so you don&rsquo;t have to.</p></div></li>
         <li><span class="why-ico"><svg class="i"><use href="#i-check"/></svg></span><div><strong>Plain language</strong><p>Explained clearly, in Sinhala or English.</p></div></li>
         <li><span class="why-ico"><svg class="i"><use href="#i-check"/></svg></span><div><strong>A real local office</strong><p>Find us on Old Railway Street, Eheliyagoda, or reach us by phone and WhatsApp.</p></div></li>
@@ -603,7 +515,7 @@ def build_home():
     <header class="section-head reveal">
       <p class="eyebrow">Our services</p>
       <h2>How can we <em>help you?</em></h2>
-      <p class="lead">Individuals, startups, SMEs and companies. Pick a service to see what it covers.</p>
+      <p class="lead">Individuals, startups, SMEs, partnerships and companies. Pick a service to see what it covers.</p>
     </header>
     <div class="svc-grid">{cards}</div>
     <div class="other reveal">
@@ -678,6 +590,18 @@ def build_home():
   </div>
 </section>
 
+<!-- FAQ -->
+<section class="section faq-home" id="faq">
+  <div class="container faq-layout">
+    <header class="reveal">
+      <p class="eyebrow">Questions</p>
+      <h2>Common <em>questions</em></h2>
+      <p class="lead">Quick answers about Panambara Business Solutions. <a href="faq/">See all questions</a></p>
+    </header>
+    <div class="faqs reveal">{faq_html(home_faqs)}</div>
+  </div>
+</section>
+
 {cta_band(r)}
 </main>
 """
@@ -690,12 +614,15 @@ def build_home():
 def build_services_index():
     r = "../"
     trail = [("Services", "")]
-    cards = "".join(card(r, s["slug"], i + 1) for i, s in enumerate(SERVICES))
-    h = head(r, f"Services | {NAME}", "Accounting and bookkeeping, payroll (EPF/ETF), tax, company secretarial, business consulting and financial consulting from Panambara Business Solutions in Eheliyagoda.",
-             "services/", [business_ld(), breadcrumb_ld([("Home", ""), ("Services", "services/")])])
+    cards = "".join(card(r, sv["slug"], i + 1) for i, sv in enumerate(SERVICES))
+    lead = (f"{NUM[len(SERVICES)]} services, one accountable team in Eheliyagoda, Sri Lanka. Pick a service to see what it covers, "
+            "the questions we are asked most and how we work.")
+    h = head(r, f"Services | {NAME}",
+             "Taxation, accounting, audit, business advisory, corporate compliance, payroll, web development and digital marketing in Eheliyagoda, Sri Lanka.",
+             "services/", [business_ld(), services_list_ld(), breadcrumb_ld([("Home", ""), ("Services", "services/")])])
     body = f"""{nav(r, "services")}
 <main id="main">
-{page_hero(r, trail, "Our <em>services</em>", "Six services, one accountable team. Pick a service to see what it covers and how we work.", photo="card-3")}
+{page_hero(r, trail, "Our <em>services</em>", lead, photo="card-3", extra=f'<p class="updated">Last updated: {CONTENT_UPDATED}</p>')}
 <section class="section services">
   <svg class="watermark watermark--paper" aria-hidden="true"><use href="#bars"/></svg>
   <div class="container"><div class="svc-grid svc-grid--3">{cards}</div></div>
@@ -706,54 +633,55 @@ def build_services_index():
     write("services/index.html", h + body + footer(r))
 
 
-def build_service(s):
+def build_service(sv):
     r = "../../"
-    trail = [("Services", r + "services/"), (s["title"], "")]
+    trail = [("Services", r + "services/"), (sv["title"], "")]
+    faq_items = sv["faqs"] + common_faqs(sv)
     handle = "".join(
-        f'<li><span class="handle-ico"><svg class="i"><use href="#i-check"/></svg></span><div><strong>{e(t)}</strong><p>{e(d)}</p></div></li>' for t, d in s["handle"])
-    aud = "".join(f"<li>{e(a)}</li>" for a in s["audience"])
+        f'<li><span class="handle-ico"><svg class="i"><use href="#i-check"/></svg></span><div><strong>{e(t)}</strong><p>{e(d)}</p></div></li>' for t, d in sv["handle"])
+    aud = "".join(f"<li>{e(a)}</li>" for a in sv["audience"])
     steps = "".join(
-        f'<li><span class="vstep-no tnum">{i + 1:02d}</span><div><h3>{e(t)}</h3><p>{e(d.format(deliver=s["deliver"], stay=s["stay"]))}</p></div></li>'
+        f'<li><span class="vstep-no tnum">{i + 1:02d}</span><div><h3>{e(t)}</h3><p>{e(d.format(deliver=sv["deliver"], stay=sv["stay"]))}</p></div></li>'
         for i, (t, d) in enumerate(STEPS))
-    faqs = "".join(
-        f'<details class="faq"><summary><span>{e(q)}</span><span class="svc-icon" aria-hidden="true"></span></summary><div><p>{e(a)}</p></div></details>' for q, a in s["faqs"])
     others = "".join(
         f'<li><a href="{r}services/{o["slug"]}/"><svg class="i"><use href="#{o["icon"]}"/></svg>{e(o["nav"])}<svg class="i go"><use href="#i-arrow"/></svg></a></li>'
-        for o in SERVICES if o["slug"] != s["slug"])
-    extra = ""
-    quote = f'<p class="pull">{e(s["quote"])}</p>' if s.get("quote") else ""
-    url = f"{SITE_URL}/services/{s['slug']}/"
-    svc_ld = {"@context": "https://schema.org", "@type": "Service", "name": s["title"], "description": s["lead"], "url": url,
-              "provider": {"@id": SITE_URL + "/#business"}, "areaServed": {"@type": "Country", "name": "Sri Lanka"}}
-    faq_ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
-        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in s["faqs"]]}
-    h = head(r, f"{s['title']} in Eheliyagoda | {NAME}", s["meta"], f"services/{s['slug']}/",
-             [business_ld(), svc_ld, faq_ld, breadcrumb_ld([("Home", ""), ("Services", "services/"), (s["title"], f"services/{s['slug']}/")])])
-    body = f"""{nav(r, "svc:" + s["slug"])}
+        for o in SERVICES if o["slug"] != sv["slug"])
+    quote = f'<p class="pull">{e(sv["quote"])}</p>' if sv.get("quote") else ""
+    url = f"{SITE_URL}/services/{sv['slug']}/"
+    svc_ld = {"@context": "https://schema.org", "@type": "Service", "@id": url + "#service", "name": sv["title"], "serviceType": sv["title"],
+              "description": sv["overview"], "url": url, "provider": {"@id": SITE_URL + "/#business"},
+              "areaServed": [{"@type": "City", "name": "Eheliyagoda"}, {"@type": "Country", "name": "Sri Lanka"}],
+              "audience": {"@type": "Audience", "audienceType": ", ".join(sv["audience"])},
+              "hasOfferCatalog": {"@type": "OfferCatalog", "name": sv["title"], "itemListElement": [
+                  {"@type": "Offer", "itemOffered": {"@type": "Service", "name": t, "description": d}} for t, d in sv["handle"]]}}
+    h = head(r, f"{sv['title']} in Eheliyagoda | {NAME}", sv["meta"], f"services/{sv['slug']}/",
+             [business_ld(), svc_ld, faq_ld(faq_items), breadcrumb_ld([("Home", ""), ("Services", "services/"), (sv["title"], f"services/{sv['slug']}/")])])
+    updated = f'<p class="updated">Last updated: {CONTENT_UPDATED}</p>'
+    body = f"""{nav(r, "svc:" + sv["slug"])}
 <main id="main">
-{page_hero(r, trail, e(s["title"]), e(s["lead"]), extra=extra, photo=SERVICE_PHOTO[s["slug"]])}
+{page_hero(r, trail, e(sv["title"]), e(sv["overview"]), extra=updated, photo=SERVICE_PHOTO[sv["slug"]])}
 <section class="section svc-page">
   <div class="container svc-layout">
     <div class="svc-main">
-      <section class="block reveal">
+      <section class="block reveal" id="who-its-for">
         <h2>Who it&rsquo;s for</h2>
         <ul class="chips chips--lg">{aud}</ul>
         {quote}
       </section>
 
-      <section class="block reveal">
+      <section class="block reveal" id="what-we-handle">
         <h2>What we <em>handle</em></h2>
         <ul class="handle">{handle}</ul>
       </section>
 
-      <section class="block reveal">
+      <section class="block reveal" id="how-it-works">
         <h2>How it <em>works</em></h2>
         <ol class="vsteps">{steps}</ol>
       </section>
 
-      <section class="block reveal">
+      <section class="block reveal" id="faqs">
         <h2>Common <em>questions</em></h2>
-        <div class="faqs">{faqs}</div>
+        <div class="faqs">{faq_html(faq_items)}</div>
       </section>
     </div>
 
@@ -775,7 +703,7 @@ def build_service(s):
 {cta_band(r)}
 </main>
 """
-    write(f"services/{s['slug']}/index.html", h + body + footer(r))
+    write(f"services/{sv['slug']}/index.html", h + body + footer(r))
 
 
 # ---------------------------------------------------------------------------
@@ -803,10 +731,10 @@ def build_about():
         <p class="eyebrow">Who we are</p>
         <h2>Straightforward advice. <em>Careful work.</em></h2>
         <p class="lead">Panambara Business Solutions is an accounting and tax practice in Eheliyagoda, established in 2015. We look after the numbers and the filings, so owners can look after the business.</p>
-        <p>Accounting, payroll, tax and company secretarial work are handled by one team that you can actually reach, by phone, on WhatsApp or in person at our office. We work with individuals, startups, SMEs and companies.</p>
+        <p>Tax, accounting, audit support, compliance, payroll, web development and digital marketing are handled by one team that you can actually reach, by phone, on WhatsApp or in person at our office. We work with individuals, startups, SMEs, partnerships and companies.</p>
       </div>
       <ul class="ticks reveal">
-        <li>One team for tax, payroll, accounts and company secretarial work</li>
+        <li>One team for tax, accounts, compliance, payroll and digital services</li>
         <li>Filing deadlines tracked on your behalf</li>
         <li>Explained in plain language, in Sinhala or English</li>
         <li>An office you can walk into, not just a phone number</li>
@@ -817,7 +745,7 @@ def build_about():
 
 <section class="section about-svc">
   <div class="container">
-    <header class="section-head reveal"><p class="eyebrow">What we do</p><h2>Six services, <em>one team.</em></h2></header>
+    <header class="section-head reveal"><p class="eyebrow">What we do</p><h2>{NUM[len(SERVICES)]} services, <em>one team.</em></h2></header>
     <ul class="mini-grid reveal">{mini}</ul>
   </div>
 </section>
@@ -912,13 +840,13 @@ def legal_page(slug, title, desc, intro, sections):
     r = "../"
     trail = [(title, "")]
     secs = "".join(f"<h2>{e(t)}</h2>{b}" for t, b in sections)
-    h = head(r, f"{title} | {NAME}", desc, f"{slug}/", [business_ld(), breadcrumb_ld([("Home", ""), (title, f"{slug}/")])])
+    h = head(r, f"{title} | {NAME}", desc, f"{slug}/", [business_ld(), breadcrumb_ld([("Home", ""), (title, f"{slug}/")])], modified="2026-11-06")
     body = f"""{nav(r, "legal")}
 <main id="main">
 {page_hero(r, trail, e(title), e(intro), actions=False)}
 <section class="section legal">
   <div class="container legal-in">
-    <p class="legal-date">Last updated: {TODAY.strftime("%d %B %Y").lstrip("0")}</p>
+    <p class="legal-date">Last updated: {LEGAL_UPDATED}</p>
     <div class="prose">{secs}</div>
   </div>
 </section>
@@ -931,7 +859,7 @@ def build_legal():
     c = f'<a href="mailto:{EMAIL}">{EMAIL}</a>'
     legal_page(
         "terms-and-conditions", "Terms & Conditions",
-        "Terms for using the Panambara Business Solutions website.",
+        "Terms for using the Panambara Business Solutions website in Eheliyagoda, Sri Lanka, covering general information, services and liability.",
         "The terms for using this website.",
         [
             ("About these terms", f"<p>This website is run by {NAME} (&ldquo;PBS&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) from {ADDRESS}, Sri&nbsp;Lanka. By using the site you agree to these terms. If you do not agree, please do not use it.</p>"),
@@ -963,7 +891,7 @@ def build_legal():
 
 def build_404():
     r = ""
-    h = head(r, f"Page not found | {NAME}", "That page could not be found.", "404.html")
+    h = head(r, f"Page not found | {NAME}", "That page could not be found.", "404.html", noindex=True)
     body = f"""{nav(r, "")}
 <main id="main">
 <section class="page-hero"><svg class="watermark watermark--dark" aria-hidden="true"><use href="#bars"/></svg>
@@ -976,21 +904,79 @@ def build_404():
     write("404.html", h + body + footer(r))
 
 
+def build_faq():
+    r = "../"
+    trail = [("FAQ", "")]
+    overview = ("These are the questions people ask Panambara Business Solutions most often about its services in Eheliyagoda, Sri Lanka: "
+                "what it offers, where the office is, how to book a consultation, and how it helps with tax returns, EPF and ETF, "
+                "company registration and IRD notices.")
+    h = head(r, f"Frequently Asked Questions | {NAME}",
+             "Answers about Panambara Business Solutions in Eheliyagoda: services, office hours, booking, tax returns, EPF and ETF, company registration, IRD notices and costs.",
+             "faq/", [business_ld(), faq_ld(FAQ_GENERAL), breadcrumb_ld([("Home", ""), ("FAQ", "faq/")])])
+    body = f"""{nav(r, "faq")}
+<main id="main">
+{page_hero(r, trail, "Frequently asked <em>questions</em>", overview, photo="card-1", extra=f'<p class="updated">Last updated: {CONTENT_UPDATED}</p>')}
+<section class="section faq-page">
+  <div class="container">
+    <div class="faqs">{faq_html(FAQ_GENERAL)}</div>
+  </div>
+</section>
+{cta_band(r)}
+</main>
+"""
+    write("faq/index.html", h + body + footer(r))
+
+
 def build_seo_files():
-    pages = [""] + ["services/"] + [f"services/{s['slug']}/" for s in SERVICES] + ["about-us/", "contact-us/", "terms-and-conditions/", "privacy-policy/"]
-    urls = "".join(f"  <url><loc>{SITE_URL}/{p}</loc><lastmod>{TODAY.isoformat()}</lastmod></url>\n" for p in pages)
+    pages = ([("", CONTENT_UPDATED_ISO), ("services/", CONTENT_UPDATED_ISO)] + [(f"services/{sv['slug']}/", CONTENT_UPDATED_ISO) for sv in SERVICES] +
+             [("about-us/", CONTENT_UPDATED_ISO), ("contact-us/", CONTENT_UPDATED_ISO), ("faq/", CONTENT_UPDATED_ISO),
+              ("terms-and-conditions/", "2026-11-06"), ("privacy-policy/", "2026-11-06")])
+    urls = "".join(f"  <url><loc>{SITE_URL}/{pth}</loc><lastmod>{d}</lastmod></url>\n" for pth, d in pages)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
     write("robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}/sitemap.xml\n")
+    svc_lines = "\n".join(f"- [{sv['title']}]({SITE_URL}/services/{sv['slug']}/): {sv['short']}" for sv in SERVICES)
+    write("llms.txt", f"""# {NAME} (PBS)
+
+> {HOME_OVERVIEW}
+
+## Key facts
+- Name: {NAME}
+- Established: 2015
+- Address: {ADDRESS}, Sri Lanka
+- Phone and WhatsApp: {PHONE}
+- Other phone lines: {", ".join(t for t, _ in OTHER_LINES)}
+- Email: {EMAIL}
+- Office hours: Monday to Friday 9:00 am to 5:00 pm, Saturday 9:00 am to 1:00 pm, closed Sunday
+- Facebook: {FACEBOOK}
+- YouTube: {YOUTUBE}
+
+## Services
+{svc_lines}
+
+## Pages
+- [About us]({SITE_URL}/about-us/)
+- [Contact us]({SITE_URL}/contact-us/)
+- [Frequently asked questions]({SITE_URL}/faq/)
+
+Last updated: {CONTENT_UPDATED}
+""")
 
 
 if __name__ == "__main__":
+    # remove service pages that no longer exist, so old URLs do not linger in the deployed site
+    svc_root = os.path.join(ROOT, "services")
+    valid = {sv["slug"] for sv in SERVICES}
+    for name in os.listdir(svc_root) if os.path.isdir(svc_root) else []:
+        if os.path.isdir(os.path.join(svc_root, name)) and name not in valid:
+            shutil.rmtree(os.path.join(svc_root, name))
     build_home()
     build_services_index()
     for svc in SERVICES:
         build_service(svc)
     build_about()
     build_contact()
+    build_faq()
     build_legal()
     build_404()
     build_seo_files()
-    print(f"built 12 pages + 404 + sitemap + robots for {SITE_URL}")
+    print(f"built {len(SERVICES) + 7} pages + 404 + sitemap + robots + llms.txt for {SITE_URL}")

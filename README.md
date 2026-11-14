@@ -5,22 +5,24 @@ Static multi-page site (HTML, CSS, vanilla JS). The shared header, footer and se
 ```
 index.html                         home (slider, stats, why us, services, tax band, reels, process)
 services/index.html                all services
-services/<service>/index.html      one page per service (6)
+services/<service>/index.html      one page per service (8)
 about-us/  contact-us/             about and contact (form + map)
 terms-and-conditions/  privacy-policy/
-404.html  sitemap.xml  robots.txt
+faq/  404.html  sitemap.xml  robots.txt  llms.txt
 css/style.css   js/script.js       styles and behaviour
 assets/images/                     logo images
 assets/images/team/                team photo crops (WebP) and the 1200x630 share image
-tools/build.py                     generates every .html page + sitemap
+tools/build.py                     generates every .html page, sitemap.xml, robots.txt and llms.txt
+tools/content.py                   service wording, FAQs, headline numbers and the "last updated" date
 tools/make_photos.py               makes the photo crops from the original 2000x1125 photos (kept outside this repo)
 CONTENT_REVIEW.md                  what changed in the copy and what the owner must confirm
+SEO_AEO_GEO.md                     search, AI-answer and local visibility: what is built, what the owner must do, how to test
 SITE_PROMPT.md                     brief (brand, structure, copy) for reuse
 ```
 
 ## Change the content
 
-Page text lives in `tools/build.py` (service wording, FAQs, legal text, slider copy). After editing:
+Service wording, FAQs, the four headline numbers and the "last updated" date live in `tools/content.py`. Layout, slider copy and the legal text live in `tools/build.py`. After editing:
 
 ```bash
 python tools/build.py

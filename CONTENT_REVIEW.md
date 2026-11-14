@@ -22,7 +22,6 @@ Also added: Schema.org `AccountingService` data (address, phone, hours, services
 
 2. **"IRD notices & penalties" under Tax Services.** Inferred from one of the PBS ads about IRD notices and penalties. Remove if it is not a service they offer.
 3. **"Explained in plain language, in Sinhala or English".** Based on their bilingual ads. Add Tamil if they serve Tamil-speaking clients.
-4. **"Bookkeeping, Financial statements"** chips and the Business/Financial Consulting descriptions. The ads name these services but do not describe them. Wording is conservative; adjust to what is really delivered.
 5. **Office hours** (Mon–Fri 9–5, Sat 9–1) came from the owner during this project. Confirm they apply year-round.
 6. **Phone lines.** 071 666 4111 is treated as the WhatsApp number. Confirm that, and that 070 167 9811 / 074 244 8951 / 036 226 0888 are all staffed.
 7. **Social links (added).** Facebook (`/PBSolutionsSL`), YouTube channel and LinkedIn are live in `SOCIAL` at the top of `js/script.js`.
@@ -38,11 +37,18 @@ New pages: Services overview, one page for each of the six services, About Us, C
 Please check these before launch:
 
 10. **Terms & Conditions and Privacy Policy.** I wrote them to describe what this site actually does (no accounts, contact form stores nothing, Google Fonts/Maps/YouTube embeds). They are sensible general text, **not legal advice**. Have the owner read them, ideally a lawyer, and add the legal company name once known.
-11. **Service page wording.** Every service page uses only what the ads say, plus careful plain-language filler. These are my inference, so confirm or edit them: *"Records ready for filing"* (Accounting), *"Starting out / Structuring / Growing"* (Business Consulting), *"Understanding your numbers / Supporting decisions / Planning ahead"* (Financial Consulting). Consulting pages are thin on purpose until the owner supplies real detail.
-12. **FAQ answers** (three per service) are deliberately safe and procedural. Check the answers about the IRD notice and about filing late; they promise help, not outcomes.
 13. **Slider headlines.** Slides 2 and 3 reuse the wording of the "Simplifying Tax & Business Compliance" and "Company Secretarial" ads. Slides 4 and 5 ("One team for your tax, payroll and filings", "Books and payroll, kept in order") are my wording; confirm or change them in `HERO` in `tools/build.py`.
-14. **Stats strip** shows only checkable facts: years since 2015 (calculated each year), 6 services, 4 phone lines, Mon–Sat office. "Walk-ins welcome" is an assumption; remove it if appointments are required.
 15. **Dropped from the reference site because PBS has no equivalent:** Client Portal, external consultation booking site, event link, Request Details pop-up, the Spotify link.
+
+## November 2026: services, numbers and search/AI visibility
+
+21. **Services restructured to the owner's list.** The five categories the owner pasted (Taxation & Tax Consultancy; Financial Management & Accounting; Audit & Assurance; Business Advisory & Consultancy; Corporate Compliance & Regulatory Affairs) are now the main services, plus Payroll Management (from the ads), Web Development and Digital Marketing. "Accounting & Bookkeeping" and "Financial Consulting" merged into Financial Management & Accounting; "Business Consulting" became Business Advisory & Consultancy; "Company Secretarial" became part of Corporate Compliance. Page addresses changed accordingly.
+22. **Audit & Assurance.** Taken from the owner's list. Confirm PBS is allowed to offer each item (for example, statutory audits in Sri Lanka must be signed by a qualified, registered auditor). The page claims only internal audits, financial statement reviews, help with audit queries and risk assessments, and does not claim statutory audits.
+23. **Web Development and Digital Marketing are drafted from a one-line brief.** The owner asked for "web development" and "digital marketing (Facebook / LinkedIn / TikTok / Google profile)". The scope lists and FAQs were written by me. Confirm exactly what is offered, what is not, and whether prices or packages should be shown.
+24. **Headline numbers** are shown exactly as supplied: 750+ business registrations, 1,500+ local clients, 200K+ social media engagements, 2,000+ consultations. Please confirm: (a) where each number comes from (records, social media analytics, etc.), (b) the "+" on "200K" (the owner wrote it without), (c) what "engagements" counts and over what period (the reference site said "monthly"; this site does not), and (d) a date. The note under the numbers reads "Figures supplied by Panambara Business Solutions, as of November 2026." and should be updated whenever the figures change.
+25. **Definitions in the FAQs** (APIT = Advance Personal Income Tax, WHT = withholding tax, EPF/ETF, ROC = Registrar of Companies, internal audit, management accounts, investment appraisal) are general, plain-language definitions. They avoid rates, thresholds and deadlines. A tax professional at PBS should read them once.
+26. **FAQs.** Every service page has seven to eight questions, and there is a site-wide `/faq/` page and a short FAQ on the home page. Answers are 30-50 words, answer first, and name the business. The structured data for each FAQ is generated from the same list as the visible text so they cannot disagree. Prices are never stated; the cost answer says fees are confirmed directly.
+27. **"Last updated" dates** (14 November 2026) are real, set in `tools/content.py`. Change the date only when content genuinely changes. Do not bump it without a real edit.
 
 ## Photos (real team photos, added)
 

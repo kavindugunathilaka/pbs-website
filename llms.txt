@@ -1,0 +1,31 @@
+# Panambara Business Solutions (PBS)
+
+> Panambara Business Solutions is an accounting, tax and business services practice in Eheliyagoda, Sri Lanka, established in 2015. It supports individuals, startups, SMEs, partnerships and companies with taxation, accounting, audit, business advisory, corporate compliance, payroll, web development and digital marketing.
+
+## Key facts
+- Name: Panambara Business Solutions
+- Established: 2015
+- Address: 240/A, Old Railway Street, Eheliyagoda, Sri Lanka
+- Phone and WhatsApp: 071 666 4111
+- Other phone lines: 070 167 9811, 074 244 8951, 036 226 0888
+- Email: info@panambara.lk
+- Office hours: Monday to Friday 9:00 am to 5:00 pm, Saturday 9:00 am to 1:00 pm, closed Sunday
+- Facebook: https://www.facebook.com/PBSolutionsSL/
+- YouTube: https://www.youtube.com/channel/UCYsc7NPU5trLjidRzrCPwHA
+
+## Services
+- [Taxation & Tax Consultancy](https://kavindugunathilaka.github.io/pbs-website/services/taxation-tax-consultancy/): Corporate tax, personal income tax, VAT, APIT, WHT and compliance.
+- [Financial Management & Accounting](https://kavindugunathilaka.github.io/pbs-website/services/financial-management-accounting/): Financial reporting, management accounts, budgeting and cash flow.
+- [Audit & Assurance](https://kavindugunathilaka.github.io/pbs-website/services/audit-assurance/): Internal audits, financial statement reviews and risk assessments.
+- [Business Advisory & Consultancy](https://kavindugunathilaka.github.io/pbs-website/services/business-advisory-consultancy/): Business registration, financial planning, business plans and investment appraisals.
+- [Corporate Compliance & Regulatory Affairs](https://kavindugunathilaka.github.io/pbs-website/services/corporate-compliance/): ROC compliance, company secretarial matters and statutory reporting.
+- [Payroll Management (EPF / ETF)](https://kavindugunathilaka.github.io/pbs-website/services/payroll-management/): Payroll on schedule, with EPF and ETF handled.
+- [Web Development](https://kavindugunathilaka.github.io/pbs-website/services/web-development/): Business websites that are mobile-friendly and easy to find.
+- [Digital Marketing](https://kavindugunathilaka.github.io/pbs-website/services/digital-marketing/): Facebook, LinkedIn, TikTok and Google profile set-up and management.
+
+## Pages
+- [About us](https://kavindugunathilaka.github.io/pbs-website/about-us/)
+- [Contact us](https://kavindugunathilaka.github.io/pbs-website/contact-us/)
+- [Frequently asked questions](https://kavindugunathilaka.github.io/pbs-website/faq/)
+
+Last updated: 14 November 2026
