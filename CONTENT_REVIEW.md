@@ -44,6 +44,13 @@ Please check these before launch:
 14. **Stats strip** shows only checkable facts: years since 2015 (calculated each year), 6 services, 4 phone lines, Mon–Sat office. "Walk-ins welcome" is an assumption; remove it if appointments are required.
 15. **Dropped from the reference site because PBS has no equivalent:** Client Portal, external consultation booking site, event link, Request Details pop-up, the Spotify link.
 
+## Photos (real team photos, added)
+
+17. **Staff consent.** The photos show nine staff members. Confirm everyone shown is happy to appear on a public website.
+18. **The sign photo** is cropped to the sign only, which leaves the framed certificates beside it out of the picture. The certificates show the company's registered name and a registration number, so check what the owner is comfortable publishing before ever using a wider crop.
+19. **Legal company name.** The certificate beside the sign appears to read "Panambara Business Solutions (Pvt) Ltd". If that is right, add "(Pvt) Ltd" to the footer copyright and to the Terms and Privacy pages. I did not change the legal text without confirmation.
+20. **Alt text** describes what the photos show without naming anyone. Add names only with each person's permission.
+
 ## Deliberately left out
 
 - **Client testimonials and client-count statistics.** None were supplied; inventing them would be false. Add real ones (with permission) when available.

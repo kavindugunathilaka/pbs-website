@@ -13,6 +13,21 @@ import json
 import os
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+PHOTO_ALT = {
+    "hero-wide": "Four PBS team members in green PBS polo shirts reviewing documents together at a laptop",
+    "card-1": "Four PBS team members in green PBS polo shirts reviewing documents together at a laptop",
+    "card-3": "The full PBS team of nine in green PBS polo shirts gathered around a laptop",
+    "card-4": "Three PBS team members working together at a laptop, one pointing at the screen",
+    "card-5": "Three PBS team members seated at a laptop with a colleague standing beside them",
+    "card-6": "Four PBS team members in green polo shirts looking through documents at a laptop",
+    "team-full": "The full PBS team of nine in green PBS polo shirts gathered around a laptop",
+    "why-arch": "Three PBS team members working at a laptop, one pointing at the screen",
+    "sign": "The illuminated PBS sign reading Panambara Business Solutions",
+}
+SERVICE_PHOTO = {
+    "accounting-bookkeeping": "card-1", "payroll-management": "card-5", "tax-services": "card-4",
+    "company-secretarial": "card-3", "business-consulting": "card-6", "financial-consulting": "card-1",
+}
 SITE_URL = os.environ.get("SITE_URL", "https://kavindugunathilaka.github.io/pbs-website").rstrip("/")
 TODAY = datetime.date.today()
 NAME = "Panambara Business Solutions"
@@ -209,7 +224,7 @@ def business_ld():
     return {
         "@context": "https://schema.org", "@type": "AccountingService", "@id": SITE_URL + "/#business",
         "name": NAME, "alternateName": "PBS", "slogan": "Your Trusted Tax & Finance Partner",
-        "foundingDate": "2015", "url": SITE_URL + "/", "image": SITE_URL + "/assets/images/hero-1536.webp",
+        "foundingDate": "2015", "url": SITE_URL + "/", "image": SITE_URL + "/assets/images/team/og-share.jpg",
         "telephone": PHONE_TEL, "email": EMAIL,
         "sameAs": [FACEBOOK, YOUTUBE],
         "address": {"@type": "PostalAddress", "streetAddress": "240/A, Old Railway Street", "addressLocality": "Eheliyagoda", "addressCountry": "LK"},
@@ -229,7 +244,7 @@ def breadcrumb_ld(trail):
 
 def head(r, title, desc, path, extra=(), home=False):
     canon = f"{SITE_URL}/{path}"
-    preload = f'<link rel="preload" as="image" href="{r}assets/images/hero-1536.webp" media="(min-width: 761px)">\n' if home else ""
+    preload = f'<link rel="preload" as="image" href="{r}assets/images/team/hero-wide.webp" media="(min-width: 761px)">\n' if home else ""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -245,7 +260,10 @@ def head(r, title, desc, path, extra=(), home=False):
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:url" content="{canon}">
-<meta property="og:image" content="{SITE_URL}/assets/images/hero-1536.webp">
+<meta property="og:image" content="{SITE_URL}/assets/images/team/og-share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="{r}assets/images/logo-badge-512.png">
 <link rel="apple-touch-icon" href="{r}assets/images/logo-badge-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -404,20 +422,24 @@ def footer(r):
 """
 
 
-def page_hero(r, trail, h1, lead, actions=True, extra=""):
+def page_hero(r, trail, h1, lead, actions=True, extra="", photo=None):
     home = r or "./"
     crumbs = [("Home", home)] + trail[:-1]
     bc = "".join(f'<li><a href="{u}">{n}</a></li>' for n, u in crumbs) + f'<li aria-current="page">{trail[-1][0]}</li>'
     act = (f'<div class="page-hero-actions"><a href="{r}contact-us/#form" class="btn btn-gold btn-lg">Book a consultation</a>'
            f'<a href="tel:{PHONE_TEL}" class="btn btn-ghost btn-lg"><svg class="i"><use href="#i-phone"/></svg>{PHONE}</a></div>') if actions else ""
-    return f"""<section class="page-hero">
+    fig = (f'<figure class="page-hero-photo"><img src="{r}assets/images/team/{photo}.webp" width="1200" height="750" alt="{PHOTO_ALT[photo]}"></figure>') if photo else ""
+    return f"""<section class="page-hero{' has-photo' if photo else ''}">
   <svg class="watermark watermark--dark" aria-hidden="true"><use href="#bars"/></svg>
   <div class="container page-hero-in">
+    <div class="page-hero-copy">
     <nav class="crumbs" aria-label="Breadcrumb"><ol>{bc}</ol></nav>
     <h1>{h1}</h1>
     <p class="page-lead">{lead}</p>
     {extra}
     {act}
+    </div>
+    {fig}
   </div>
 </section>
 """
@@ -465,8 +487,8 @@ def build_home():
     <article class="slide slide--photo is-active" role="group" aria-roledescription="slide" aria-label="1 of 3: Welcome">
       <div class="slide-media">
         <picture>
-          <source media="(max-width: 760px)" srcset="assets/images/hero-900.webp">
-          <img src="assets/images/hero-1536.webp" width="1536" height="2048" alt="The Panambara Business Solutions team, in green PBS polo shirts, in front of the illuminated PBS sign at their Eheliyagoda office" fetchpriority="high">
+          <source media="(max-width: 760px)" srcset="assets/images/team/hero-mobile.webp">
+          <img src="assets/images/team/hero-wide.webp" width="1920" height="1080" alt="{PHOTO_ALT['hero-wide']}" fetchpriority="high">
         </picture>
         <div class="slide-shade"></div>
       </div>
@@ -554,7 +576,7 @@ def build_home():
 <section class="section why" id="why">
   <div class="container why-grid">
     <figure class="why-media reveal">
-      <img src="assets/images/hero-1536.webp" width="1536" height="2048" alt="Members of the PBS team smiling in the Eheliyagoda office" loading="lazy">
+      <img src="assets/images/team/why-arch.webp" width="800" height="1000" alt="{PHOTO_ALT['why-arch']}" loading="lazy">
     </figure>
     <div class="why-copy reveal">
       <p class="eyebrow">Why Panambara</p>
@@ -670,7 +692,7 @@ def build_services_index():
              "services/", [business_ld(), breadcrumb_ld([("Home", ""), ("Services", "services/")])])
     body = f"""{nav(r, "services")}
 <main id="main">
-{page_hero(r, trail, "Our <em>services</em>", "Six services, one accountable team. Pick a service to see what it covers and how we work.")}
+{page_hero(r, trail, "Our <em>services</em>", "Six services, one accountable team. Pick a service to see what it covers and how we work.", photo="card-3")}
 <section class="section services">
   <svg class="watermark watermark--paper" aria-hidden="true"><use href="#bars"/></svg>
   <div class="container"><div class="svc-grid svc-grid--3">{cards}</div></div>
@@ -706,7 +728,7 @@ def build_service(s):
              [business_ld(), svc_ld, faq_ld, breadcrumb_ld([("Home", ""), ("Services", "services/"), (s["title"], f"services/{s['slug']}/")])])
     body = f"""{nav(r, "svc:" + s["slug"])}
 <main id="main">
-{page_hero(r, trail, e(s["title"]), e(s["lead"]), extra=extra)}
+{page_hero(r, trail, e(s["title"]), e(s["lead"]), extra=extra, photo=SERVICE_PHOTO[s["slug"]])}
 <section class="section svc-page">
   <div class="container svc-layout">
     <div class="svc-main">
@@ -765,20 +787,22 @@ def build_about():
              "about-us/", [business_ld(), breadcrumb_ld([("Home", ""), ("About Us", "about-us/")])])
     body = f"""{nav(r, "about")}
 <main id="main">
-{page_hero(r, trail, "About <em>Panambara</em>", "An accounting and tax practice on Old Railway Street in Eheliyagoda, established in 2015.")}
+{page_hero(r, trail, "About <em>Panambara</em>", "An accounting and tax practice on Old Railway Street in Eheliyagoda, established in 2015.", photo="card-5")}
 
 <section class="section about-intro">
-  <div class="container about-grid">
-    <figure class="about-photo reveal">
-      <img src="{r}assets/images/hero-1536.webp" width="1536" height="2048" alt="The Panambara Business Solutions team in green PBS polo shirts, in front of the illuminated PBS sign" loading="lazy">
-      <figcaption>The PBS team at our office on Old Railway Street, Eheliyagoda.</figcaption>
+  <div class="container">
+    <figure class="about-banner reveal">
+      <img src="{r}assets/images/team/team-full.webp" width="1600" height="900" alt="{PHOTO_ALT['team-full']}" loading="lazy">
+      <figcaption>The PBS team.</figcaption>
     </figure>
-    <div class="about-copy reveal">
-      <p class="eyebrow">Who we are</p>
-      <h2>Straightforward advice. <em>Careful work.</em></h2>
-      <p class="lead">Panambara Business Solutions is an accounting and tax practice in Eheliyagoda, established in 2015. We look after the numbers and the filings, so owners can look after the business.</p>
-      <p>Accounting, payroll, tax and company secretarial work are handled by one team that you can actually reach, by phone, on WhatsApp or in person at our office. We work with individuals, startups, SMEs and companies.</p>
-      <ul class="ticks">
+    <div class="about-grid">
+      <div class="about-copy reveal">
+        <p class="eyebrow">Who we are</p>
+        <h2>Straightforward advice. <em>Careful work.</em></h2>
+        <p class="lead">Panambara Business Solutions is an accounting and tax practice in Eheliyagoda, established in 2015. We look after the numbers and the filings, so owners can look after the business.</p>
+        <p>Accounting, payroll, tax and company secretarial work are handled by one team that you can actually reach, by phone, on WhatsApp or in person at our office. We work with individuals, startups, SMEs and companies.</p>
+      </div>
+      <ul class="ticks reveal">
         <li>One team for tax, payroll, accounts and company secretarial work</li>
         <li>Filing deadlines tracked on your behalf</li>
         <li>Explained in plain language, in Sinhala or English</li>
@@ -806,6 +830,7 @@ def build_about():
         <a href="tel:{PHONE_TEL}" class="btn btn-ghost"><svg class="i"><use href="#i-phone"/></svg>{PHONE}</a>
       </div>
     </div>
+    <figure class="visit-photo reveal"><img src="{r}assets/images/team/sign.webp" width="1400" height="723" alt="{PHOTO_ALT['sign']}" loading="lazy"></figure>
   </div>
 </section>
 {cta_band(r)}
@@ -822,7 +847,7 @@ def build_contact():
              "contact-us/", [business_ld(), breadcrumb_ld([("Home", ""), ("Contact Us", "contact-us/")])])
     body = f"""{nav(r, "contact")}
 <main id="main">
-{page_hero(r, trail, "Let&rsquo;s talk about <em>your numbers.</em>", "Call, message us on WhatsApp or send the form below. We&rsquo;ll get back to you.", actions=False)}
+{page_hero(r, trail, "Let&rsquo;s talk about <em>your numbers.</em>", "Call, message us on WhatsApp or send the form below. We&rsquo;ll get back to you.", actions=False, photo="card-6")}
 
 <section class="section contact">
   <div class="contact-glow" aria-hidden="true"></div>

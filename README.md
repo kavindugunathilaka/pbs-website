@@ -10,8 +10,10 @@ about-us/  contact-us/             about and contact (form + map)
 terms-and-conditions/  privacy-policy/
 404.html  sitemap.xml  robots.txt
 css/style.css   js/script.js       styles and behaviour
-assets/images/                     hero and logo images
+assets/images/                     logo images
+assets/images/team/                team photo crops (WebP) and the 1200x630 share image
 tools/build.py                     generates every .html page + sitemap
+tools/make_photos.py               makes the photo crops from the original 2000x1125 photos (kept outside this repo)
 CONTENT_REVIEW.md                  what changed in the copy and what the owner must confirm
 SITE_PROMPT.md                     brief (brand, structure, copy) for reuse
 ```
@@ -54,3 +56,7 @@ Then open http://localhost:5500.
 - Palette: forest green `#06231a`, gold `#c8a24a`, paper `#f6f2e7`.
 - Structure follows businessadvisor.lk: top bar, Services dropdown, hero slider, stats strip, why us, services grid, footer columns, a page per service, Terms and Privacy.
 - Accessible: skip link, keyboard-operable dropdown, accordion-free FAQs (native `<details>`), carousel with pause control and reduced-motion support.
+
+## Photos
+
+The six originals live outside the repo (e.g. `D:/VOYAGE/PBS/photos`). To change a crop, edit `tools/make_photos.py` and run `python tools/make_photos.py <photos-folder>`, then `python tools/build.py`. Recommended source size for any new cover photo: 2400 x 1350 px (16:9), with the people in the lower two thirds so the headline has clear space above them.
